@@ -1,0 +1,37 @@
+# Copyright 2009, 2010 Kevin Ryde
+
+# This file is part of Upfiles.
+
+# Upfiles is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 3, or (at your option) any later
+# version.
+#
+# Upfiles is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+# more details.
+#
+# You can get a copy of the GNU General Public License online at
+# <http://www.gnu.org/licenses/>.
+
+# Build-Depends could have the "maximum_tests" modules from META.yml
+# for more tests, but they're optional author tests really and would
+# just make the build tools drag in more stuff.
+
+Source: upfiles
+Section: misc
+Priority: optional
+Build-Depends: cdbs, debhelper (>= 5)
+Maintainer: Kevin Ryde <user42@zip.com.au>
+Standards-Version: 3.8.4
+Homepage: http://user42.tuxfamily.org/upfiles/index.html
+Bugs: mailto:user42@zip.com.au
+
+Package: upfiles
+Architecture: all
+Depends: perl (>= 5.10), libdbd-sqlite3-perl, libfile-homedir-perl, libintl-perl, libmath-round-perl, liburi-perl, ${perl:Depends}, ${misc:Depends}
+Suggests: libintl-xs-perl
+Description: Upload files to an FTP server
+ Upload changed files from your local disk to an FTP server, as a
+ simple "push" mirroring.

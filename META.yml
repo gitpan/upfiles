@@ -1,0 +1,46 @@
+--- #YAML:1.0
+name:               upfiles
+version:            2
+abstract:           Upload files to a remote FTP server.
+author:
+    - Kevin Ryde <user42@zip.com.au>
+license:            gpl
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
+requires:
+    DBD::SQLite:         0
+    DBI:                 0
+    File::HomeDir:       0
+    Locale::TextDomain:  0
+    Math::Round:         0
+    perl:                5.010
+    URI:                 0
+resources:
+    homepage:  http://user42.tuxfamily.org/upfiles/index.html
+    license:   http://www.gnu.org/licenses/gpl.html
+no_index:
+    directory:
+        - t
+        - inc
+        - devel
+generated_by:       ExtUtils::MakeMaker version 6.55_02
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4
+optional_features:
+    maximum_tests:
+        description:  Have "make test" do as much as possible.
+        requires:
+            Parse::CPAN::Meta:   0
+            Test::DistManifest:  0
+            Test::NoWarnings:    0
+            Test::Pod:           1.00
+            Test::Synopsis:      0
+            Test::YAML::Meta:    0.13
+            YAML:                0
+            YAML::Syck:          0
+            YAML::Tiny:          0
+            YAML::XS:            0

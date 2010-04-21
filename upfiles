@@ -1,0 +1,175 @@
+#!/usr/bin/perl
+
+# Copyright 2009, 2010 Kevin Ryde
+
+# This file is part of Upfiles.
+#
+# Upfiles is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation; either version 3, or (at your option) any later
+# version.
+#
+# Upfiles is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
+
+use strict;
+use warnings;
+use App::Upfiles;
+
+our $VERSION = 2;
+
+my $upf = App::Upfiles->new;
+exit $upf->command_line;
+
+__END__
+
+=head1 NAME
+
+upfiles -- upload files to an FTP server, for push mirroring
+
+=head1 SYNOPSIS
+
+ upfiles [--options]
+
+=head1 DESCRIPTION
+
+Upfiles uploads changed files from your local disk to an FTP server, for a
+simple kind of "push" mirroring.
+
+Create your files locally with the same directory structure as the target,
+and in a F<~/.upfiles.conf> file give the locations,
+
+    upfiles (local => '/my/directory',
+             remote => 'ftp://fred@some-server.org/pub/fred');
+
+This is actually Perl code, so you can put comment lines with C<#>, write
+some conditionals, use C<< $ENV{HOME} >>, etc.  Then to upload run
+
+    upfiles
+
+Your password on the remote system is taken from C<~/.netrc> the same as the
+C<ftp> program and others use.  See C<netrc(5)> or L<Net::Netrc> for the
+format.
+
+B<upfiles> records what has been sent in a F<.upfiles.sqdb> file in each
+local toplevel directory, like F</my/directory/.upfiles.sqdb>.  Changes are
+identified by comparing file mtimes and sizes against the database.  This is
+much faster than asking the remote server what it's got each time.
+
+For convenience some files in local directories are always excluded from the
+upload.  Currently this is F<.upfiles.sqdb> itself, and Emacs backups
+F<foo~>, autosaves F<#foo#> and locks F<.#foo>.
+
+=head1 CONFIGURATION
+
+Each C<upfiles> call in F<~/.upfiles.conf> takes the following parameters,
+
+=over 4
+
+=item C<local> (string)
+
+The local directory to upload from.
+
+=item C<remote> (string)
+
+The remote FTP server to upload to, as a URL.  The path in the URL is the
+target directory, and if your username on the remote machine is not the same
+as your local username then include it with "@" syntax, like
+
+    remote => 'ftp://fred@some-server.org/pub/fred',
+
+=item C<exclude_regexps> (arrayref of regexps)
+
+Eg.
+
+    upfiles (local => '/my/directory',
+             remote => 'ftp://some-server.org/pub/fred',
+             exclude_regexps => [ qr{/(^|/)[Mm]akefile$} ]);
+
+=back
+
+=head1 COMMAND-LINE OPTIONS
+
+The command line options are
+
+=over 4
+
+=item -n, --dry-run
+
+Show what would be uploaded to or deleted from the server, but don't
+actually do anything.
+
+    upfiles -n
+
+=item --help
+
+Print some brief help information.
+
+=item -V, --verbose, --verbose=N
+
+Print some diagnostics about what's being done.  With --verbose=2 or
+--verbose=3 print some technical details too.
+
+    upfiles --verbose
+
+=item --version
+
+Print the upfiles program version number.  With C<--verbose=2> also print
+version numbers of some modules used.
+
+=back
+
+=head1 FILES
+
+=over 4
+
+=item F<~/.upfiles.conf>
+
+Configuration file.
+
+=item F<~/.netrc>
+
+FTP password file.
+
+=item F<$localdir/.upfiles.sqdb>
+
+SQLite database of information about what has been sent.
+
+=back
+
+=head1 BUGS
+
+Changing a local file from a file to a directory or vice versa probably
+doesn't work very well.  Remove it and upload, then create the new form and
+upload that.
+
+=head1 SEE ALSO
+
+L<Net::FTP>, C<netrc(5)>, L<Net::Netrc>, L<DBD::SQLite>
+
+=head1 HOME PAGE
+
+L<http://user42.tuxfamily.org/upfiles/index.html>
+
+=head1 LICENSE
+
+Copyright 2009, 2010 Kevin Ryde
+
+Upfiles is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation; either version 3, or (at your option) any later version.
+
+Upfiles is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+details.
+
+You should have received a copy of the GNU General Public License along with
+Upfiles.  If not, see L<http://www.gnu.org/licenses/>.
+
+=cut
