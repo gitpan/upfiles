@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
 # Copyright 2009, 2010 Kevin Ryde
 
@@ -19,16 +19,17 @@
 
 use strict;
 use warnings;
-use Test::More tests => 13;
+use Test::More tests => 12;
 
-SKIP: { eval 'use Test::NoWarnings; 1'
-          or skip 'Test::NoWarnings not available', 1; }
+use lib 't';
+use MyTestHelpers;
+BEGIN { MyTestHelpers::nowarnings() }
 
 require App::Upfiles::FTPlazy;
 
 #------------------------------------------------------------------------------
 {
-  my $want_version = 2;
+  my $want_version = 3;
   is ($App::Upfiles::FTPlazy::VERSION, $want_version, 'VERSION variable');
   is (App::Upfiles::FTPlazy->VERSION,  $want_version, 'VERSION class method');
   ok (eval { App::Upfiles::FTPlazy->VERSION($want_version); 1 },

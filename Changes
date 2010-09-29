@@ -17,6 +17,9 @@ along with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
+Version 3, September 2010
+    - test manifest only as an author test
+
 Version 2, April 2010
     - drop singleton instance stuff
 

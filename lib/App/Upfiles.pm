@@ -30,7 +30,7 @@ use Locale::TextDomain ('App-Upfiles');
 use FindBin;
 my $progname = $FindBin::Script;
 
-our $VERSION = 2;
+our $VERSION = 3;
 
 use constant { DATABASE_FILENAME       => '.upfiles.sqdb',
                DATABASE_SCHEMA_VERSION => 1,
@@ -72,11 +72,9 @@ sub command_line {
   };
 
   require Getopt::Long;
-  Getopt::Long::GetOptions (require_order => 1,
-                            bundling      => 1,
-                            ignore_case   => 0,
-
-                            'help|?'    => $set_action,
+  Getopt::Long::Configure ('no_ignore_case',
+                           'bundling');
+  Getopt::Long::GetOptions ('help|?'    => $set_action,
                             'verbose:i' => \$self->{'verbose'},
                             'V+'        => \$self->{'verbose'},
                             version     => $set_action,
@@ -106,7 +104,7 @@ sub action_version {
 sub action_help {
   my ($self) = @_;
   print __x("Usage: $progname [--options]\n");
-die  print __x("  --help         print this message\n");
+  print __x("  --help         print this message\n");
   print __x("  --version      print version number (and module versions if --verbose=2)\n");
   print __x("  -n, --dry-run  don't do anything, just print what would be done\n");
   print __x("  --verbose, --verbose=N
@@ -537,8 +535,8 @@ Create and return an Upfiles object.
 =item C<< $exitcode = $upf->command_line >>
 
 Run an Upfiles as from the command line.  Arguments are taken from C<@ARGV>
-and the return is an exit status suitable for use with C<exit>, meaning 0
-for success.
+and the return is an exit status code suitable for C<exit>, meaning 0 for
+success.
 
 =back
 

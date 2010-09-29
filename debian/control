@@ -12,8 +12,9 @@
 # FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 # more details.
 #
-# You can get a copy of the GNU General Public License online at
-# <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along
+# with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
+
 
 # Build-Depends could have the "maximum_tests" modules from META.yml
 # for more tests, but they're optional author tests really and would
@@ -24,7 +25,7 @@ Section: misc
 Priority: optional
 Build-Depends: cdbs, debhelper (>= 5)
 Maintainer: Kevin Ryde <user42@zip.com.au>
-Standards-Version: 3.8.4
+Standards-Version: 3.9.1
 Homepage: http://user42.tuxfamily.org/upfiles/index.html
 Bugs: mailto:user42@zip.com.au
 

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!perl -w
 
 # Copyright 2009, 2010 Kevin Ryde
 
@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use App::Upfiles;
 
-our $VERSION = 2;
+our $VERSION = 3;
 
 my $upf = App::Upfiles->new;
 exit $upf->command_line;
@@ -150,7 +150,7 @@ upload that.
 
 =head1 SEE ALSO
 
-L<Net::FTP>, C<netrc(5)>, L<Net::Netrc>, L<DBD::SQLite>
+L<Net::FTP>, L<netrc(5)>, L<Net::Netrc>, L<DBD::SQLite>
 
 =head1 HOME PAGE
 
