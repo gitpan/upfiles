@@ -1,4 +1,4 @@
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -21,7 +21,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = 3;
+our $VERSION = 4;
 
 our $upf;
 
@@ -53,7 +53,7 @@ L<http://user42.tuxfamily.org/upfiles/index.html>
 
 =head1 LICENSE
 
-Copyright 2009, 2010 Kevin Ryde
+Copyright 2009, 2010, 2011 Kevin Ryde
 
 Upfiles is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software

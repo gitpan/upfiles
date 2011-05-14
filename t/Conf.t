@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -29,7 +29,7 @@ require App::Upfiles::Conf;
 
 #------------------------------------------------------------------------------
 {
-  my $want_version = 3;
+  my $want_version = 4;
   is ($App::Upfiles::Conf::VERSION, $want_version, 'VERSION variable');
   is (App::Upfiles::Conf->VERSION,  $want_version, 'VERSION class method');
   ok (eval { App::Upfiles::Conf->VERSION($want_version); 1 },

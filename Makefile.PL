@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -42,9 +42,9 @@ MyMakeMakerExtras::WriteMakefile
                    },
    MIN_PERL_VERSION => '5.010',
 
-   META_MERGE
-   => { resources
-        => { homepage => 'http://user42.tuxfamily.org/upfiles/index.html',
-           },
-      },
+   META_MERGE =>
+   { resources =>
+     { homepage => 'http://user42.tuxfamily.org/upfiles/index.html',
+     },
+   },
   );

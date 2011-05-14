@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.63.
+signed via the Module::Signature module, version 0.67.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -15,41 +15,43 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 842745cb706f8f2126506f544492f7a80dbe29b3 COPYING
-SHA1 25ec143b6f9ff9c8fdce370fe7ff2c77c7695fae Changes
-SHA1 f28f8f00a6541e7870d0770c547e2ff7ddd1dea4 MANIFEST
-SHA1 e6e7c2904ea5d300c0ddf70fc5a80f5005229aa9 MANIFEST.SKIP
-SHA1 cb9d07756ddcbba573190feb36776c6363adfdcd META.yml
-SHA1 34392aed99ad0dd4070b5d392660d4aaf3a3a9e4 Makefile.PL
-SHA1 6202974294511b0863d195e5a2279a02366a29b9 debian/changelog
+SHA1 7b2779fc91d0d6eb2f741f8bf0c9f1818d093ff8 Changes
+SHA1 2abcea46db5b7ff07b67f8d9338be502dc7d1275 MANIFEST
+SHA1 d6f9595a0ae02220d6781c9460782ae32c0d4aaf MANIFEST.SKIP
+SHA1 6572f7753fd5b47879e174b298090187f03c91c7 META.yml
+SHA1 cc96509f12b28a998cba30229aa7ee1486a310ab Makefile.PL
+SHA1 c11426138898ebf27ea49fa9b7003ddcad3883ce debian/changelog
 SHA1 ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4 debian/compat
-SHA1 5fb893343e2d5dd21f79c9648a7dfd3971a336bc debian/control
-SHA1 2b34f1025d451910132e1f36bce1fcdcbce74520 debian/copyright
+SHA1 9ec132a53951d90b18819575e40f73466a999a7c debian/control
+SHA1 91ec6c1fc59a7fa51696af4fbd2ea0a562336aba debian/copyright
 SHA1 26c29238677ac41d67aa67a266241a1f9bb63e36 debian/rules
 SHA1 61652cd1568dcf2614df833eba241755eee34e89 debian/source/format
 SHA1 059224714974312811e753c8ff4326fcbbbdd7e1 debian/watch
 SHA1 e1077ea1e7bdd00b9ce6e659c0a5e793e9615c28 devel/gettext-strerror.pl
 SHA1 2551a50cfafa5f20d898f0f9d98962aeb1ebb2b3 devel/misc.pl
 SHA1 4e2f9384e3479d2a1e7a6c7cbd9ca26a08210f0e devel/mtime.pl
-SHA1 3cf3345a9177dbe362dfc8fbf192272f4a611ca8 inc/MyMakeMakerExtras.pm
-SHA1 692a1ddc2ca6b98cac7b48ea40bc1ac1509e8ed9 inc/my_pod2html
-SHA1 cc7a5beb079a8257836606b7fd459b5420fcf42e lib/App/Upfiles.pm
-SHA1 da7dd4e8e46e558c88f25758d65f879a15fa09a5 lib/App/Upfiles/Conf.pm
-SHA1 5edc0f8030331ba05c15da684c6c23c0808c06bf lib/App/Upfiles/FTPlazy.pm
-SHA1 1e81fd536c433da96e2a5aff039a757a6ddcbe65 t/Conf.t
-SHA1 710b4920283a79bb6665cc62f519c66870deb053 t/FTPlazy.t
-SHA1 5e5680b471811244fe93571efc23e7b6089cac3b t/MyTestHelpers.pm
-SHA1 d106fe49b34ec50d13625394365affee3595887e t/Upfiles.t
-SHA1 e8e022b70ce2a9497896129399186ea38c3e15e0 upfiles
-SHA1 9127f78a0dfa04976acbb979dd7862ef59a74c58 xt/0-META-read.t
-SHA1 37abd43b41068804ea4bb099fdd89af21be82926 xt/0-Test-DistManifest.t
-SHA1 8f93fb4c8f0424a4442cc93c9a2e86342ef55281 xt/0-Test-Pod.t
-SHA1 1de8f07883f6bf1a2ef79f2cb8adf1deb3f61cee xt/0-Test-Synopsis.t
-SHA1 fb517c2fae5ddac559318bf6a224949115ea3129 xt/0-Test-YAML-Meta.t
-SHA1 c84fa2f39a57885c647ebb69a456f3129de706c1 xt/0-exe-shebang.t
+SHA1 7aa92b5074cf12916763acbfc1c440575679a07e inc/MyMakeMakerExtras.pm
+SHA1 7a988b2aa7ed09f1cb9029a1ef3f0e2139dca0cf inc/my_pod2html
+SHA1 9ed459fd5e8622713238238ce929c13d9c5c84c3 lib/App/Upfiles.pm
+SHA1 f3413fa01449dea2a262afd2daca4e96ad6df790 lib/App/Upfiles/Conf.pm
+SHA1 cbe995846276728599ca30f5e5c3dcfabe59492e lib/App/Upfiles/FTPlazy.pm
+SHA1 e774edf0bf933217536bc6da489f0e93ec3638e9 t/Conf.t
+SHA1 c665ef9647ede8f2003b6112badf141ff3bce1f3 t/FTPlazy.t
+SHA1 4dc04c5401c223a0beedf001b5d8fb71afbdabfd t/MyTestHelpers.pm
+SHA1 ffe29a9554c89d0e5b9f42d5f358e18987d79509 t/Upfiles.t
+SHA1 cbe82a8e03d448bfacffcf8174012de1f22d7ff2 upfiles
+SHA1 0279c9310ec528d10a2a14e602bf98f1c776cce1 xt/0-META-read.t
+SHA1 219395eb91b03829e6f14db4ebd57d88ea972e61 xt/0-Test-ConsistentVersion.t
+SHA1 8a5e0f34131de34e584fbb1939c191a152566155 xt/0-Test-DistManifest.t
+SHA1 cc04a5fe5d8b8b38bfd56453d5d2686c8ea58783 xt/0-Test-Pod.t
+SHA1 8cc52e23427a82cfef5802bf512b13c65de2687a xt/0-Test-Synopsis.t
+SHA1 4c14845872d6eb4280e12f862d6ba2c343358c60 xt/0-Test-YAML-Meta.t
+SHA1 42c04ae557ab86d3488c647ea17bd37cd2bd7d6a xt/0-exe-shebang.t
+SHA1 439687ac1489fcb62c3cf200fedf9ebf210e7bf7 xt/0-no-debug-left-on.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
+Version: GnuPG v1.4.11 (GNU/Linux)
 
-iD8DBQFMo7sdLFMCIV9q3ToRAogxAJ9WtsNrtoRt0ukkuvdVyrjNOoyVRwCcD9yE
-gMJM5HZ6gOMH3zr4GRUzLss=
-=qUei
+iD8DBQFNzdo7LFMCIV9q3ToRAlL6AJoCTt1EVHatb1FU3wHIlP72yJrJaQCeOgAe
+Q8lmV6YVz5vWKqpHwus31Rw=
+=s1+l
 -----END PGP SIGNATURE-----

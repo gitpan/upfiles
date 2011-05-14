@@ -1,4 +1,4 @@
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -30,7 +30,7 @@ use Locale::TextDomain ('App-Upfiles');
 use FindBin;
 my $progname = $FindBin::Script;
 
-our $VERSION = 3;
+our $VERSION = 4;
 
 use constant { DATABASE_FILENAME       => '.upfiles.sqdb',
                DATABASE_SCHEMA_VERSION => 1,
@@ -333,7 +333,9 @@ sub upfiles {
     my $fullname = $File::Find::name;
     my $basename = File::Basename::basename ($fullname);
 
-    if ($basename eq DATABASE_FILENAME) {
+    if ($basename eq DATABASE_FILENAME
+        # .sqdb-journal file if interrupted on previous run
+        || $basename eq DATABASE_FILENAME.'-journal') {
       $File::Find::prune = 1;
       return;
     }
@@ -550,7 +552,7 @@ L<http://user42.tuxfamily.org/upfiles/index.html>
 
 =head1 LICENSE
 
-Copyright 2009, 2010 Kevin Ryde
+Copyright 2009, 2010, 2011 Kevin Ryde
 
 Upfiles is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software

@@ -1,6 +1,6 @@
 #!perl -w
 
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use App::Upfiles;
 
-our $VERSION = 3;
+our $VERSION = 4;
 
 my $upf = App::Upfiles->new;
 exit $upf->command_line;
@@ -41,8 +41,8 @@ upfiles -- upload files to an FTP server, for push mirroring
 Upfiles uploads changed files from your local disk to an FTP server, for a
 simple kind of "push" mirroring.
 
-Create your files locally with the same directory structure as the target,
-and in a F<~/.upfiles.conf> file give the locations,
+Create files locally with the same directory structure as the target, and in
+a F<~/.upfiles.conf> file give the locations,
 
     upfiles (local => '/my/directory',
              remote => 'ftp://fred@some-server.org/pub/fred');
@@ -52,18 +52,23 @@ some conditionals, use C<< $ENV{HOME} >>, etc.  Then to upload run
 
     upfiles
 
-Your password on the remote system is taken from C<~/.netrc> the same as the
-C<ftp> program and others use.  See C<netrc(5)> or L<Net::Netrc> for the
-format.
+Your username on the remote system is in the target URL in the usual way.
+The password is taken from C<~/.netrc> the same as for the C<ftp> program
+and other programs.  See L<netrc(5)> or L<Net::Netrc> for the format.
 
-B<upfiles> records what has been sent in a F<.upfiles.sqdb> file in each
-local toplevel directory, like F</my/directory/.upfiles.sqdb>.  Changes are
-identified by comparing file mtimes and sizes against the database.  This is
-much faster than asking the remote server what it's got each time.
+B<upfiles> records what has been sent in an SQLite database file
+F<.upfiles.sqdb> in each local toplevel directory, like
+F</my/directory/.upfiles.sqdb>.  Changes are identified by comparing file
+mtimes and sizes against the database.  This is much faster than asking the
+remote server what it's got each time.
 
 For convenience some files in local directories are always excluded from the
-upload.  Currently this is F<.upfiles.sqdb> itself, and Emacs backups
-F<foo~>, autosaves F<#foo#> and locks F<.#foo>.
+upload.  Currently this is
+
+    .upfiles.sqdb    from upfiles itself
+    foo~             Emacs backups
+    #foo#            Emacs autosaves
+    .#foo            Emacs lockfiles
 
 =head1 CONFIGURATION
 
@@ -85,7 +90,7 @@ as your local username then include it with "@" syntax, like
 
 =item C<exclude_regexps> (arrayref of regexps)
 
-Eg.
+Additional filenames to exclude.  For example to exclude a local F<Makefile>
 
     upfiles (local => '/my/directory',
              remote => 'ftp://some-server.org/pub/fred',
@@ -120,7 +125,7 @@ Print some diagnostics about what's being done.  With --verbose=2 or
 =item --version
 
 Print the upfiles program version number.  With C<--verbose=2> also print
-version numbers of some modules used.
+the version numbers of some modules used.
 
 =back
 
@@ -156,9 +161,11 @@ L<Net::FTP>, L<netrc(5)>, L<Net::Netrc>, L<DBD::SQLite>
 
 L<http://user42.tuxfamily.org/upfiles/index.html>
 
+(Upfiles is good for uploading to tuxfamily.)
+
 =head1 LICENSE
 
-Copyright 2009, 2010 Kevin Ryde
+Copyright 2009, 2010, 2011 Kevin Ryde
 
 Upfiles is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software

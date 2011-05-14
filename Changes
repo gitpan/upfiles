@@ -1,4 +1,4 @@
-Copyright 2009, 2010 Kevin Ryde
+Copyright 2009, 2010, 2011 Kevin Ryde
 
 This file is part of Upfiles.
 
@@ -16,6 +16,9 @@ You should have received a copy of the GNU General Public License
 along with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
 
 
+
+Version 4, May 2011
+    - don't upload .upfiles.sqdb-journal file
 
 Version 3, September 2010
     - test manifest only as an author test

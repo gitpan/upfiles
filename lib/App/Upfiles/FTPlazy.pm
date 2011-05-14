@@ -1,4 +1,4 @@
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -22,7 +22,7 @@ use warnings;
 use Carp;
 use base 'Net::FTP';
 
-our $VERSION = 3;
+our $VERSION = 4;
 
 sub new {
   my $class = shift;
