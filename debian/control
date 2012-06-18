@@ -1,4 +1,4 @@
-# Copyright 2009, 2010, 2011 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012 Kevin Ryde
 
 # This file is part of Upfiles.
 
@@ -25,7 +25,7 @@ Section: misc
 Priority: optional
 Build-Depends: cdbs, debhelper (>= 5)
 Maintainer: Kevin Ryde <user42@zip.com.au>
-Standards-Version: 3.9.2
+Standards-Version: 3.9.3
 Homepage: http://user42.tuxfamily.org/upfiles/index.html
 Bugs: mailto:user42@zip.com.au
 

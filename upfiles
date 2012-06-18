@@ -1,6 +1,6 @@
 #!perl -w
 
-# Copyright 2009, 2010, 2011 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use App::Upfiles;
 
-our $VERSION = 4;
+our $VERSION = 5;
 
 my $upf = App::Upfiles->new;
 exit $upf->command_line;
@@ -44,7 +44,7 @@ simple kind of "push" mirroring.
 Create files locally with the same directory structure as the target, and in
 a F<~/.upfiles.conf> file give the locations,
 
-    upfiles (local => '/my/directory',
+    upfiles (local  => '/my/directory',
              remote => 'ftp://fred@some-server.org/pub/fred');
 
 This is actually Perl code, so you can put comment lines with C<#>, write
@@ -52,23 +52,31 @@ some conditionals, use C<< $ENV{HOME} >>, etc.  Then to upload run
 
     upfiles
 
-Your username on the remote system is in the target URL in the usual way.
-The password is taken from C<~/.netrc> the same as for the C<ftp> program
-and other programs.  See L<netrc(5)> or L<Net::Netrc> for the format.
+Your username on the remote system is in the remote URL.  A password is
+taken from C<~/.netrc> the same as for the C<ftp> program and other
+programs.  See L<netrc(5)> or L<Net::Netrc> for the format of that file.
 
 B<upfiles> records what has been sent in an SQLite database file
-F<.upfiles.sqdb> in each local toplevel directory, like
-F</my/directory/.upfiles.sqdb>.  Changes are identified by comparing file
-mtimes and sizes against the database.  This is much faster than asking the
-remote server what it's got each time.
+F<.upfiles.sqdb> in each local toplevel directory, for example
+F</my/directory/.upfiles.sqdb>.  Local changes are identified by comparing
+file mtimes and sizes against the database.  This is much faster than asking
+the remote server what it's got.
 
-For convenience some files in local directories are always excluded from the
-upload.  Currently this is
+For convenience some local files are always excluded from the upload.
+Currently this is
 
     .upfiles.sqdb    from upfiles itself
     foo~             Emacs backups
     #foo#            Emacs autosaves
     .#foo            Emacs lockfiles
+
+Files are uploaded one by one.  The upload goes first to a temporary file
+and is then renamed.  This means an incomplete file isn't left if the
+connection is lost or upfiles is killed during transfer.  Temporary files
+are noted in the database and any leftovers deleted on the next upfiles run.
+
+Plain RFC959 ftp doesn't have a notion of symlinks or hard links so
+C<upfiles> simply follows any local file to its actual content.
 
 =head1 CONFIGURATION
 
@@ -106,8 +114,8 @@ The command line options are
 
 =item -n, --dry-run
 
-Show what would be uploaded to or deleted from the server, but don't
-actually do anything.
+Show what would be uploaded or deleted on the server, but don't actually do
+anything.
 
     upfiles -n
 
@@ -150,12 +158,30 @@ SQLite database of information about what has been sent.
 =head1 BUGS
 
 Changing a local file from a file to a directory or vice versa probably
-doesn't work very well.  Remove it and upload, then create the new form and
+doesn't work very well.  Remove it and upload, then create the new and
 upload that.
+
+FTP requires a couple of round trip command/responses to the server for
+every file.  When uploading many small files something streaming or parallel
+might be faster.  The temp file and rename adds a round trip too, but is
+desirable so anyone looking at the server doesn't see a half file.  Perhaps
+an option could turn this off if that doesn't matter (upfiles for a remote
+backup or some such).
+
+The temporary files are named using the local C<$$> PID added to the target
+filename.  This is enough to protect against simultaneous uploads from the
+same source machine, but potentially unsafe if you're networked and are
+foolish enough to C<upfiles> simultaneously from two different source
+machines.  C<STOU> would guarantee uniqueness, but is there a window if
+interrupted while the name comes back that could leave it created but
+unknown?  C<Net::FTP> C<put_unique()> doesn't return the name until after
+transfer too.
 
 =head1 SEE ALSO
 
 L<Net::FTP>, L<netrc(5)>, L<Net::Netrc>, L<DBD::SQLite>
+
+L<sitecopy(1)>, L<ftpmirror(1)>, L<ftp-upload(1)>, L<rsync(1)>
 
 =head1 HOME PAGE
 
@@ -165,7 +191,7 @@ L<http://user42.tuxfamily.org/upfiles/index.html>
 
 =head1 LICENSE
 
-Copyright 2009, 2010, 2011 Kevin Ryde
+Copyright 2009, 2010, 2011, 2012 Kevin Ryde
 
 Upfiles is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software

@@ -1,6 +1,6 @@
 # MyTestHelpers.pm -- my shared test script helpers
 
-# Copyright 2008, 2009, 2010, 2011 Kevin Ryde
+# Copyright 2008, 2009, 2010, 2011, 2012 Kevin Ryde
 
 # MyTestHelpers.pm is shared by several distributions.
 #
@@ -45,10 +45,15 @@ sub DEBUG { 0 }
   my $stacktraces;
   my $stacktraces_count = 0;
   sub nowarnings_handler {
-    $warning_count++;
-    if ($stacktraces_count < 3 && eval { require Devel::StackTrace }) {
-      $stacktraces_count++;
-      $stacktraces .= "\n" . Devel::StackTrace->new->as_string() . "\n";
+    my ($msg) = @_;
+    # don't error out for cpan alpha version number warnings
+    unless (defined $msg
+            && $msg =~ /^Argument "[0-9._]+" isn't numeric in numeric gt/) {
+      $warning_count++;
+      if ($stacktraces_count < 3 && eval { require Devel::StackTrace }) {
+        $stacktraces_count++;
+        $stacktraces .= "\n" . Devel::StackTrace->new->as_string() . "\n";
+      }
     }
     warn @_;
   }
@@ -70,7 +75,7 @@ sub DEBUG { 0 }
 }
 
 sub diag {
-  if (Test::More->can('diag')) {
+  if (do { local $@; eval { Test::More->can('diag') }}) {
     Test::More::diag (@_);
   } else {
     my $msg = join('', map {defined($_)?$_:'[undef]'} @_)."\n";
@@ -98,7 +103,9 @@ sub findrefs {
   if (ref $obj && Scalar::Util::reftype($obj) eq 'HASH') {
     MyTestHelpers::diag ("Keys: ",
                          join(' ',
-                              map {"$_=$obj->{$_}"} keys %$obj));
+                              map {"$_=".(defined $obj->{$_}
+                                          ? "$obj->{$_}" : '[undef]')}
+                              keys %$obj));
   }
   if (eval { require Devel::FindRef }) {
     MyTestHelpers::diag (Devel::FindRef::track($obj, 8));
@@ -166,9 +173,13 @@ sub warn_suppress_gtk_icon {
 }
 
 sub glib_gtk_versions {
+  my $gtk1_loaded = Gtk->can('init');
   my $gtk2_loaded = Gtk2->can('init');
   my $glib_loaded = Glib->can('get_home_dir');
 
+  if ($gtk1_loaded) {
+    MyTestHelpers::diag ("Perl-Gtk1    version ",Gtk->VERSION);
+  }
   if ($gtk2_loaded) {
     MyTestHelpers::diag ("Perl-Gtk2    version ",Gtk2->VERSION);
   }
@@ -192,6 +203,12 @@ sub glib_gtk_versions {
                          Gtk2::major_version(), ".",
                          Gtk2::minor_version(), ".",
                          Gtk2::micro_version(), ".");
+  }
+  if ($gtk1_loaded) {
+    MyTestHelpers::diag ("Running on       Gtk version ",
+                         Gtk->major_version(), ".",
+                         Gtk->minor_version(), ".",
+                         Gtk->micro_version(), ".");
   }
 }
 
@@ -231,7 +248,7 @@ sub wait_for_event {
        return 1; # Glib::SOURCE_CONTINUE (new in Glib 1.220)
      });
   if ($widget->can('get_display')) {
-    # GdkDisplay new in Gtk 2.2
+    # display new in Gtk 2.2
     $widget->get_display->sync;
   } else {
     # in Gtk 2.0 gdk_flush() is a sync actually
@@ -256,7 +273,8 @@ sub wait_for_event {
 
 sub X11_chosen_screen_number {
   my ($X) = @_;
-  foreach my $i (0 .. $#{$X->{'screens'}}) {
+  my $i;
+  foreach $i (0 .. $#{$X->{'screens'}}) {
     if ($X->{'screens'}->[$i]->{'root'} == $X->{'root'}) {
       return $i;
     }

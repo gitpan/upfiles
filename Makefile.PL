@@ -1,6 +1,6 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
-# Copyright 2009, 2010, 2011 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -45,6 +45,9 @@ MyMakeMakerExtras::WriteMakefile
    META_MERGE =>
    { resources =>
      { homepage => 'http://user42.tuxfamily.org/upfiles/index.html',
+       license  => 'http://www.gnu.org/licenses/gpl.html',
      },
+     no_index => { directory=>['devel'],
+                 }
    },
   );

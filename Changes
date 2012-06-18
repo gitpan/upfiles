@@ -1,4 +1,4 @@
-Copyright 2009, 2010, 2011 Kevin Ryde
+Copyright 2009, 2010, 2011, 2012 Kevin Ryde
 
 This file is part of Upfiles.
 
@@ -16,6 +16,10 @@ You should have received a copy of the GNU General Public License
 along with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
 
 
+
+Version 5, June 2012
+    - upload to temp file on remote
+    - create initial remote directory on first upload
 
 Version 4, May 2011
     - don't upload .upfiles.sqdb-journal file

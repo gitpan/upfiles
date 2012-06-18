@@ -1,4 +1,4 @@
-# Copyright 2009, 2010, 2011 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -20,9 +20,12 @@ use 5.010;
 use strict;
 use warnings;
 use Carp;
-use base 'Net::FTP';
+use Net::FTP;
 
-our $VERSION = 4;
+# uncomment this to run the ### lines
+#use Smart::Comments;
+
+our $VERSION = 5;
 
 sub new {
   my $class = shift;
@@ -162,8 +165,14 @@ sub ensure_all {
         && $self->_cwd;
 }
 
+sub alloc {
+  my $self = shift;
+  ### FTPlazy alloc(): @_
+  return $self->ensure_all && $self->{'ftp'}->alloc (@_);
+}
 sub put {
   my $self = shift;
+  ### FTPlazy put(): @_
   return $self->ensure_all && $self->{'ftp'}->put (@_);
 }
 sub delete {
@@ -177,6 +186,10 @@ sub mkdir {
 sub rmdir {
   my $self = shift;
   return $self->ensure_all && $self->{'ftp'}->rmdir (@_);
+}
+sub rename {
+  my $self = shift;
+  return $self->ensure_all && $self->{'ftp'}->rename (@_);
 }
 
 sub all_ok {

@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               upfiles
-version:            4
+version:            5
 abstract:           Upload files to a remote FTP server.
 author:
     - Kevin Ryde <user42@zip.com.au>
@@ -25,27 +25,10 @@ no_index:
     directory:
         - t
         - inc
+        - devel
         - xt
         - devel
-generated_by:       ExtUtils::MakeMaker version 6.56
+generated_by:       ExtUtils::MakeMaker version 6.57_05
 meta-spec:
     url:      http://module-build.sourceforge.net/META-spec-v1.4.html
     version:  1.4
-optional_features:
-    maximum_devel:
-        description:  Stuff used variously for development.
-        requires:
-            Smart::Comments:   0
-            warnings::unused:  0
-    maximum_tests:
-        description:  Have "make test" do as much as possible.
-        requires:
-            Parse::CPAN::Meta:   0
-            Test::DistManifest:  0
-            Test::Pod:           1.00
-            Test::Synopsis:      0
-            Test::YAML::Meta:    0.15
-            YAML:                0
-            YAML::Syck:          0
-            YAML::Tiny:          0
-            YAML::XS:            0

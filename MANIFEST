@@ -10,11 +10,15 @@ debian/watch
 devel/gettext-strerror.pl
 devel/misc.pl
 devel/mtime.pl
+devel/stou.pl
+devel/upf.conf
+devel/upf.pl
 inc/my_pod2html
 inc/MyMakeMakerExtras.pm
 lib/App/Upfiles.pm
 lib/App/Upfiles/Conf.pm
 lib/App/Upfiles/FTPlazy.pm
+lib/App/Upfiles/Tie/Handle/Throttle.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
@@ -25,6 +29,7 @@ t/MyTestHelpers.pm
 t/Upfiles.t
 upfiles
 xt/0-exe-shebang.t
+xt/0-file-is-part-of.t
 xt/0-META-read.t
 xt/0-no-debug-left-on.t
 xt/0-Test-ConsistentVersion.t
@@ -32,4 +37,12 @@ xt/0-Test-DistManifest.t
 xt/0-Test-Pod.t
 xt/0-Test-Synopsis.t
 xt/0-Test-YAML-Meta.t
+xtools/my-check-copyright-years.sh
+xtools/my-check-file-part-of.sh
+xtools/my-check-spelling.sh
+xtools/my-deb.sh
+xtools/my-diff-prev.sh
+xtools/my-manifest.sh
+xtools/my-pc.sh
+xtools/my-wunused.sh
 META.yml                                 Module meta-data (added by MakeMaker)

@@ -1,4 +1,4 @@
-# Copyright 2009, 2010, 2011 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -16,6 +16,12 @@
 # with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
 
 
+# Net::FTP
+# RFC 959 - ftp
+# RFC 1123 - ftp minimum requirements
+# http://cr.yp.to/ftp.html  DJB's notes
+#
+
 package App::Upfiles;
 use 5.010;
 use strict;
@@ -30,7 +36,10 @@ use Locale::TextDomain ('App-Upfiles');
 use FindBin;
 my $progname = $FindBin::Script;
 
-our $VERSION = 4;
+# uncomment this to run the ### lines
+#use Smart::Comments;
+
+our $VERSION = 5;
 
 use constant { DATABASE_FILENAME       => '.upfiles.sqdb',
                DATABASE_SCHEMA_VERSION => 1,
@@ -47,10 +56,10 @@ use constant { DATABASE_FILENAME       => '.upfiles.sqdb',
 #------------------------------------------------------------------------------
 sub new {
   my $class = shift;
-  return bless { total_size => 0,
-                 total_count => 0,
+  return bless { total_size   => 0,
+                 total_count  => 0,
                  change_count => 0,
-                 verbose => 1,
+                 verbose      => 1,
                  exclude_regexps_default => EXCLUDE_REGEXPS_DEFAULT,
                  @_ }, $class;
 }
@@ -74,15 +83,20 @@ sub command_line {
   require Getopt::Long;
   Getopt::Long::Configure ('no_ignore_case',
                            'bundling');
-  Getopt::Long::GetOptions ('help|?'    => $set_action,
-                            'verbose:i' => \$self->{'verbose'},
-                            'V+'        => \$self->{'verbose'},
-                            version     => $set_action,
-                            'n|dry-run' => \$self->{'dry_run'},
-                            'nosend'    => \$self->{'nosend'},
-                            'f'         => $set_action,
-                           );
+  if (! Getopt::Long::GetOptions ('help|?'    => $set_action,
+                                  'verbose=i' => \$self->{'verbose'},
+                                  'V+'        => \$self->{'verbose'},
+                                  'version'   => $set_action,
+                                  'n|dry-run' => \$self->{'dry_run'},
+                                  'nosend'    => \$self->{'nosend'},
+                                  'f'         => $set_action,
+                                 )) {
+    return 1;
+  }
 
+  if ($self->{'verbose'} >= 2) {
+    print "Verbosity level $self->{'verbose'}\n";
+  }
   $action = 'action_' . ($action || 'all');
   return $self->$action;
 }
@@ -124,16 +138,21 @@ sub action_all {
   print __xn(" {count} file, total size {kbytes}k (in 1024 byte blocks)\n",
              " {count} files, total size {kbytes}k (in 1024 byte blocks)\n",
              $self->{'total_count'},
-             count => $self->{'total_count'},
+             count  => $self->{'total_count'},
              kbytes => $kbytes);
   return 0;
 }
 
 sub action_f {
   my ($self, @files) = @_;
-  foreach my $file (@files) {
-    $self->one_file ($file);
-  }
+  ### action_f(): \@ARGV
+
+  @files = map {File::Spec->rel2abs($_)} @ARGV;
+  my %hash;
+  @hash{@files} = (); # hash slice
+  ### %hash
+  local $self->{'action_files_hash'} = \%hash;
+  $self->do_config_file;
   return 0;
 }
 
@@ -141,8 +160,10 @@ sub action_f {
 sub do_config_file {
   my ($self) = @_;
   my $config_filename = $self->config_filename;
-  if ($self->{'verbose'} >= 2) { print __x("config: {filename}\n",
-                                           filename => $config_filename); }
+  if ($self->{'verbose'} >= 2) {
+    print __x("config: {filename}\n",
+              filename => $config_filename);
+  }
   if ($self->{'dry_run'}) {
     if ($self->{'verbose'}) { print __x("dry run\n"); }
   }
@@ -184,7 +205,7 @@ sub ftp_connect {
   my ($self) = @_;
   my $ftp = $self->ftp;
   $ftp->ensure_all
-    or croak __x("Cannot connect to {hostname}: {ftperr}",
+    or croak __x("ftp error on {hostname}: {ftperr}",
                  hostname => $ftp->host,
                  ftperr => $ftp->message);
 }
@@ -192,7 +213,7 @@ sub ftp_connect {
 
 # return ($mtime, $size) of last send of $filename to url $remote
 sub db_get_mtime {
-  my ($dbh, $remote, $filename) = @_;
+  my ($self, $dbh, $remote, $filename) = @_;
   my $sth = $dbh->prepare_cached
     ('SELECT mtime,size FROM sent WHERE remote=? AND filename=?');
   my $aref = $dbh->selectall_arrayref($sth, undef, $remote, $filename);
@@ -203,7 +224,10 @@ sub db_get_mtime {
 }
 
 sub db_set_mtime {
-  my ($dbh, $remote, $filename, $mtime, $size) = @_;
+  my ($self, $dbh, $remote, $filename, $mtime, $size) = @_;
+  if ($self->{'verbose'} >= 2) {
+    print "  database write $filename time=$mtime,size=$size\n";
+  }
   $mtime = timet_to_timestamp($mtime);
   my $sth = $dbh->prepare_cached
     ('INSERT OR REPLACE INTO sent (remote,filename,mtime,size)
@@ -212,7 +236,10 @@ sub db_set_mtime {
 }
 
 sub db_delete_mtime {
-  my ($dbh, $remote, $filename) = @_;
+  my ($self, $dbh, $remote, $filename) = @_;
+  if ($self->{'verbose'} >= 2) {
+    print "  database delete $filename\n";
+  }
   my $sth = $dbh->prepare_cached
     ('DELETE FROM sent WHERE remote=? AND filename=?');
   $sth->execute ($remote, $filename);
@@ -227,6 +254,10 @@ sub db_remote_filenames {
 
 sub dbh {
   my ($self, $db_filename) = @_;
+
+  if ($self->{'verbose'} >= 2) {
+    print "database open $db_filename\n";
+  }
 
   require DBD::SQLite;
   my $dbh = DBI->connect ("dbi:SQLite:dbname=$db_filename",
@@ -315,20 +346,44 @@ sub upfiles {
   my $ftp = $self->ftp;
   ($ftp->host ($self->{'host'})
    && $ftp->login ($self->{'username'})
-   && $ftp->binary
-   && $ftp->cwd ($remote_dir))
-    or croak __x("ftp error: {ftperr}", ftperr => $self->ftp->message);
+   && $ftp->binary)
+    or croak __x("ftp error on {hostname}: {ftperr}",
+                 hostname => $self->{'host'},
+                 ftperr   => $self->ftp->message);
+
+  # go to the directory to notice if it doesn't exist, before attempting to
+  # open/create the database
+  chdir $local_dir
+    or croak __x("Cannot chdir to local directory {localdir}: {strerror}",
+                 localdir => $local_dir,
+                 strerror => "$!");
 
   my $db_filename = File::Spec->catfile ($local_dir, DATABASE_FILENAME);
   my $dbh = $self->dbh ($db_filename);
 
-  chdir $local_dir
-    or croak __x("Cannot chdir to {localdir}: {strerror}",
-                 localdir => $local_dir,
-                 strerror => "$!");
+  {
+    # initial creation of remote dir
+    my ($remote_mtime, $remote_size)
+      = $self->db_get_mtime ($dbh, $option{'remote'}, '/');
+    if (! $remote_mtime) {
+      my $unslashed = $remote_dir;
+      $unslashed =~ s{/$}{};
+      if ($self->{'verbose'}) { print "MKD toplevel  $remote_dir\n"; }
+
+      unless ($self->{'dry_run'}) {
+        $self->ftp_connect;
+        $self->ftp->mkdir ($unslashed, 1)
+          // croak __x("Cannot make directory {dirname}: {ftperr}",
+                       dirname => $remote_dir,
+                       ftperr  => $self->ftp->message);
+      }
+      $self->db_set_mtime ($dbh, $option{'remote'}, '/', 1, 1);
+    }
+  }
+  $ftp->cwd ($remote_dir);
 
   require File::Find;
-  my %local_filenames;
+  my %local_filenames = ('/' => 1);
   my $wanted = sub {
     my $fullname = $File::Find::name;
     my $basename = File::Basename::basename ($fullname);
@@ -372,29 +427,41 @@ sub upfiles {
                       preprocess => sub { sort @_ },
                     },
                     $local_dir);
+  ### %local_filenames
 
   my $any_changes = 0;
   foreach my $filename (sort keys %local_filenames) {
+    if (my $action_files_hash = $self->{'action_files_hash'}) {
+      my $filename_abs = File::Spec->rel2abs($filename);
+      ### $filename_abs
+      if (! exists $action_files_hash->{$filename_abs}) {
+        next;
+      }
+      ### included in action_files_hash ...
+    }
+
     if ($self->{'verbose'} >= 2) {
       print __x("local: {filename}\n", filename => $filename);
     }
     my $isdir = ($filename =~ m{/$});
 
     my ($remote_mtime, $remote_size)
-      = db_get_mtime ($dbh, $option{'remote'}, $filename);
+      = $self->db_get_mtime ($dbh, $option{'remote'}, $filename);
     my $local_st = File::stat::stat($filename)
       // next; # if no longer exists
     my $local_mtime = ($isdir ? 1 : $local_st->mtime);
     my $local_size  = ($isdir ? 1 : $local_st->size);
 
     if ($self->{'verbose'} >= 2) {
-      print "  local t=$local_mtime/size=$local_size ",
-        "remote t=",$remote_mtime//'undef',"/size=",$remote_size//'undef',"\n";
+      print "  local time=$local_mtime,size=$local_size ",
+        "remote time=",$remote_mtime//'undef',",size=",$remote_size//'undef',"\n";
     }
 
     if (defined $remote_mtime && $remote_mtime == $local_mtime
         && defined $remote_size && $remote_size == $local_size) {
-      if ($self->{'verbose'} >= 2) { print __x("    ok\n"); }
+      if ($self->{'verbose'} >= 2) {
+        print __x("    unchanged\n");
+      }
       next;
     }
 
@@ -403,7 +470,9 @@ sub upfiles {
         # directory, only has to exist
         my $unslashed = $filename;
         $unslashed =~ s{/$}{};
-        if ($self->{'verbose'}) { print "MKD  $filename\n"; }
+        if ($self->{'verbose'}) {
+          print "MKD  $filename\n";
+        }
         $self->{'change_count'}++;
         $any_changes = 1;
         next if $self->{'dry_run'};
@@ -416,26 +485,72 @@ sub upfiles {
 
       } else {
         # file, must exist and same modtime
-        my $kbytes = file_size_kbytes($filename);
-        if ($self->{'verbose'}) { print "PUT  $filename [${kbytes}k]\n"; }
+        if ($self->{'verbose'}) {
+          my $kbytes = file_size_kbytes($filename);
+          print "PUT  $filename [${kbytes}k]\n";
+        }
         $self->{'change_count'}++;
         $any_changes = 1;
         next if $self->{'dry_run'};
 
-        $self->ftp_connect;
-        $self->ftp->put ($filename, $filename)
-          or croak __x("Cannot send {filename}: {ftperr}",
-                       filename => $filename,
-                       ftperr => $self->ftp->message);
+        my $tmpname = "$filename.tmp.$$";
+        if ($self->{'verbose'} >= 2) {
+          print "  with tmpname $tmpname\n";
+        }
+        $self->db_set_mtime ($dbh, $option{'remote'}, $tmpname,
+                             $local_mtime, $local_size);
+
+        {
+          $self->ftp_connect;
+          my $put;
+          if (my $throttle_options = $option{'throttle'}) {
+            require App::Upfiles::Tie::Handle::Throttle;
+            require Symbol;
+            my $fh = Symbol::gensym();
+            tie *$fh, 'App::Upfiles::Tie::Handle::Throttle',
+              %$throttle_options;
+            ### tied: $fh
+            ### tied: tied($fh)
+            open $fh, '<', $filename
+              or croak __x("Cannot open {filename}: {strerror}",
+                           filename => $filename,
+                           strerror => $!);
+            $self->ftp->alloc ($local_size);
+            $put = $self->ftp->put ($fh, $tmpname);
+            close $fh
+              or croak __x("Error closing {filename}: {strerror}",
+                           filename => $filename,
+                           strerror => $!);
+          } else {
+            $put = $self->ftp->put ($filename, $tmpname);
+          }
+          $put or croak __x("Error sending {filename}: {ftperr}",
+                            filename => $filename,
+                            ftperr   => $self->ftp->message);
+        }
+
+        if ($self->{'verbose'} >= 2) {
+          print "  now rename\n";
+        }
+        $self->ftp->rename ($tmpname, $filename)
+          or croak __x("Cannot rename {filename}: {ftperr}",
+                       filename => $tmpname,
+                       ftperr   => $self->ftp->message);
+        $self->db_delete_mtime ($dbh, $option{'remote'}, $tmpname);
       }
     }
-    db_set_mtime ($dbh, $option{'remote'}, $filename,
-                  $local_mtime, $local_size);
+    $self->db_set_mtime ($dbh, $option{'remote'}, $filename,
+                         $local_mtime, $local_size);
   }
 
   # reversed to delete contained files before their directory ...
   foreach my $filename (reverse db_remote_filenames($dbh, $option{'remote'})) {
     next if $local_filenames{$filename};
+    if (my $action_files_hash = $self->{'action_files_hash'}) {
+      if (! exists $action_files_hash->{$filename}) {
+        next;
+      }
+    }
     my $isdir = ($filename =~ m{/$});
 
     if ($isdir) {
@@ -460,11 +575,13 @@ sub upfiles {
       $self->ftp->delete ($filename)
         or warn "Cannot delete $filename: ", $self->ftp->message;
     }
-    db_delete_mtime ($dbh, $option{'remote'}, $filename);
+    $self->db_delete_mtime ($dbh, $option{'remote'}, $filename);
   }
 
   $ftp->all_ok
-    or croak __x("ftp error: {ftperr}", ftperr => $self->ftp->message);
+    or croak __x("ftp error on {hostname}: {ftperr}",
+                 hostname => $self->{'host'},
+                 ftperr   => $self->ftp->message);
 
   if (! $any_changes) {
     if ($self->{'verbose'}) { print __x("  no changes\n"); }
@@ -552,7 +669,7 @@ L<http://user42.tuxfamily.org/upfiles/index.html>
 
 =head1 LICENSE
 
-Copyright 2009, 2010, 2011 Kevin Ryde
+Copyright 2009, 2010, 2011, 2012 Kevin Ryde
 
 Upfiles is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software
