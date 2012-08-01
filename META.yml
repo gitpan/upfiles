@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               upfiles
-version:            5
+version:            6
 abstract:           Upload files to a remote FTP server.
 author:
     - Kevin Ryde <user42@zip.com.au>

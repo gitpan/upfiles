@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use App::Upfiles;
 
-our $VERSION = 5;
+our $VERSION = 6;
 
 my $upf = App::Upfiles->new;
 exit $upf->command_line;
@@ -34,7 +34,7 @@ upfiles -- upload files to an FTP server, for push mirroring
 
 =head1 SYNOPSIS
 
- upfiles [--options]
+ upfiles [--options] [filename...]
 
 =head1 DESCRIPTION
 
@@ -52,9 +52,14 @@ some conditionals, use C<< $ENV{HOME} >>, etc.  Then to upload run
 
     upfiles
 
-Your username on the remote system is in the remote URL.  A password is
-taken from C<~/.netrc> the same as for the C<ftp> program and other
-programs.  See L<netrc(5)> or L<Net::Netrc> for the format of that file.
+Or to upload just some selected files,
+
+    upfiles /my/directory/foo.txt /my/directory/src/xyzzy.pl
+
+Your username on the remote system is in the C<ftp://> remote URL.
+A password is taken from C<~/.netrc> the same as for the C<ftp> program and
+other programs.  See L<netrc(5)> or L<Net::Netrc> for the format of that
+file.
 
 B<upfiles> records what has been sent in an SQLite database file
 F<.upfiles.sqdb> in each local toplevel directory, for example
@@ -76,7 +81,7 @@ connection is lost or upfiles is killed during transfer.  Temporary files
 are noted in the database and any leftovers deleted on the next upfiles run.
 
 Plain RFC959 ftp doesn't have a notion of symlinks or hard links so
-C<upfiles> simply follows any local file to its actual content.
+C<upfiles> follows any local links to actual content to upload.
 
 =head1 CONFIGURATION
 

@@ -17,6 +17,9 @@ along with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
+Version 6, August 2012
+    - command line files
+
 Version 5, June 2012
     - upload to temp file on remote
     - create initial remote directory on first upload

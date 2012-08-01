@@ -29,7 +29,7 @@ require App::Upfiles::FTPlazy;
 
 #------------------------------------------------------------------------------
 {
-  my $want_version = 5;
+  my $want_version = 6;
   is ($App::Upfiles::FTPlazy::VERSION, $want_version, 'VERSION variable');
   is (App::Upfiles::FTPlazy->VERSION,  $want_version, 'VERSION class method');
   ok (eval { App::Upfiles::FTPlazy->VERSION($want_version); 1 },

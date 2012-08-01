@@ -15,12 +15,12 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 842745cb706f8f2126506f544492f7a80dbe29b3 COPYING
-SHA1 84d597ba8beb156ec9e8600514f0a776a79ca864 Changes
+SHA1 5c3ac66d8544a39585c206278d044302663123cf Changes
 SHA1 8e472ef450489c6a5da48b14981c1638f520d3d4 MANIFEST
-SHA1 6e3dfa4a933a1a5da6c934cca324fc40495b2f5d MANIFEST.SKIP
-SHA1 c0986265b06340613eef00898b107284c9c53216 META.yml
+SHA1 b758f740af57256154bbf4e1f8a760a1b9f9dfe1 MANIFEST.SKIP
+SHA1 eb8aca9e55174e1dcdd53bbfd7753e1fe90cced1 META.yml
 SHA1 7d9d78f9758186fd804e349bfd41bd166c7f686e Makefile.PL
-SHA1 b82c57b1e59e62ad893617c901345a1f10d803d6 debian/changelog
+SHA1 c5153b4cbbb38bf1f0cb3696e419abfade0fe4b1 debian/changelog
 SHA1 ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4 debian/compat
 SHA1 2817ba3ebcc97ba10b460d29507c4ec6c250a940 debian/control
 SHA1 88f54a9b1b7f7d848f40b738043a60b52c909cc9 debian/copyright
@@ -35,15 +35,15 @@ SHA1 7d1c56c25df5167e37d0b0c68f45f60dfdacb3a9 devel/upf.conf
 SHA1 2edb2c8e62707cd2f2fadc0137f0cfb9a520e585 devel/upf.pl
 SHA1 355b182e01f918114bc6c85967b2de758e1dc9fe inc/MyMakeMakerExtras.pm
 SHA1 7a988b2aa7ed09f1cb9029a1ef3f0e2139dca0cf inc/my_pod2html
-SHA1 6620d6eb2474d25c3488e5a6f23176bf5c1a2c26 lib/App/Upfiles.pm
-SHA1 3bf068d1fa9dfdce3ffb04f390e33ddd22958409 lib/App/Upfiles/Conf.pm
-SHA1 7fca2e9aaf2a54610cbc9708e69cf4451ae3af76 lib/App/Upfiles/FTPlazy.pm
-SHA1 18fc4250c6ae2fc193b31cb9217dea529711b554 lib/App/Upfiles/Tie/Handle/Throttle.pm
-SHA1 01505cd2361216d5c4635954500012b827e5db83 t/Conf.t
-SHA1 54bd85e1fcb181f65a655c56bfa7183093228d90 t/FTPlazy.t
+SHA1 61bb0b88e4087df4533047796ee78b1f4003e1b3 lib/App/Upfiles.pm
+SHA1 f049fc69393ef617c9601d694010f675c4f0e0e9 lib/App/Upfiles/Conf.pm
+SHA1 cfbd9c689a75f2c7e77b52f8a56f66ce0e89205f lib/App/Upfiles/FTPlazy.pm
+SHA1 a5c2cf3eb2149930e47892e0f3fb9854bcc34046 lib/App/Upfiles/Tie/Handle/Throttle.pm
+SHA1 4ed57add595422f09c8c2b30746f53bb4c1388b6 t/Conf.t
+SHA1 f81366507e978cb96690658718181accae7bae31 t/FTPlazy.t
 SHA1 3855de075da37f5bc4e6a5534b2f00cc14872a98 t/MyTestHelpers.pm
-SHA1 c88f2b7f01bcb47e7214ba656adae5a6f3e8e0e5 t/Upfiles.t
-SHA1 7a6d5a3507a64e579d29c3b5767a500dec001a5b upfiles
+SHA1 dfcbc3346fc5eda94d34d566ab7ec249122dcc80 t/Upfiles.t
+SHA1 9044ab039a44e90d949fb7b4a7974b6d34ab5410 upfiles
 SHA1 811028548aa4b360b5086d1af3150f9dde348aa6 xt/0-META-read.t
 SHA1 c9e7a47e1f397eb5f46d7e4ef21754d9df76e36e xt/0-Test-ConsistentVersion.t
 SHA1 d9e7f38a8dcfdb76c56951e4214be8eeda2e2289 xt/0-Test-DistManifest.t
@@ -55,16 +55,16 @@ SHA1 2fb2ce60ce5c740d1eb7e3b55a96f3ccb84d38c3 xt/0-file-is-part-of.t
 SHA1 daba2840c7f128371d42516619a0e04fee2f5ff4 xt/0-no-debug-left-on.t
 SHA1 84a47c1d71fd58797a2754030998dfb673b62811 xtools/my-check-copyright-years.sh
 SHA1 bfb75ffb7a834c345288e01f561b12695f191d12 xtools/my-check-file-part-of.sh
-SHA1 aeade3655ca27d0860b1c33e94ae4159823ddbb5 xtools/my-check-spelling.sh
+SHA1 f7974511eeba27d9cc99c90f4052c555d8cf03bd xtools/my-check-spelling.sh
 SHA1 fad81dac3edf7be728f70b50d772571ff31f1bdb xtools/my-deb.sh
-SHA1 c6a29febf601937262018cfb14fbbe7e0a3b0d7a xtools/my-diff-prev.sh
+SHA1 2db0a23176de55a8ee8f1643f239aeaa2bcf4fa1 xtools/my-diff-prev.sh
 SHA1 e4a15f9b4bcf1d087de2d9ed8e87bf92b0469a6c xtools/my-manifest.sh
 SHA1 4db9c30b1fc96b04a794218ca19561b368f59679 xtools/my-pc.sh
 SHA1 631dabf52c65a7b8613d6565fef2c2416ebba7e9 xtools/my-wunused.sh
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
+Version: GnuPG v1.4.12 (GNU/Linux)
 
-iD8DBQFP374ALFMCIV9q3ToRAsdUAKCea+P6lM33IFe8U5DCXTumbwGMAwCfcq/j
-fTLwVdTk9fOTOCXeVNLgwBw=
-=8F9d
+iD8DBQFQGHcDLFMCIV9q3ToRApQHAJ47FBfsA1JLp5zMAePQliKq9jWeVwCbByjL
+K/Ps6ZcKF3YWOFYbPgTNn7k=
+=dKCd
 -----END PGP SIGNATURE-----

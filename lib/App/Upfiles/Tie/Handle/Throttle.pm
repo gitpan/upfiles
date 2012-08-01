@@ -21,7 +21,7 @@ use warnings;
 use Time::HiRes;
 use List::Util 'min';
 
-our $VERSION = 5;
+our $VERSION = 6;
 
 # uncomment this to run the ### lines
 #use Smart::Comments;

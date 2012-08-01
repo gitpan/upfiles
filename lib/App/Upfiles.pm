@@ -29,7 +29,6 @@ use warnings;
 use Carp;
 use File::Spec;
 use File::stat;
-use Math::Round;
 use POSIX ();
 use Locale::TextDomain ('App-Upfiles');
 
@@ -39,7 +38,7 @@ my $progname = $FindBin::Script;
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-our $VERSION = 5;
+our $VERSION = 6;
 
 use constant { DATABASE_FILENAME       => '.upfiles.sqdb',
                DATABASE_SCHEMA_VERSION => 1,
@@ -60,7 +59,7 @@ sub new {
                  total_count  => 0,
                  change_count => 0,
                  verbose      => 1,
-                 exclude_regexps_default => EXCLUDE_REGEXPS_DEFAULT,
+                 exclude_regexps_default => $class->EXCLUDE_REGEXPS_DEFAULT,
                  @_ }, $class;
 }
 
@@ -84,7 +83,7 @@ sub command_line {
   Getopt::Long::Configure ('no_ignore_case',
                            'bundling');
   if (! Getopt::Long::GetOptions ('help|?'    => $set_action,
-                                  'verbose=i' => \$self->{'verbose'},
+                                  'verbose:+' => \$self->{'verbose'},
                                   'V+'        => \$self->{'verbose'},
                                   'version'   => $set_action,
                                   'n|dry-run' => \$self->{'dry_run'},
@@ -97,7 +96,7 @@ sub command_line {
   if ($self->{'verbose'} >= 2) {
     print "Verbosity level $self->{'verbose'}\n";
   }
-  $action = 'action_' . ($action || 'all');
+  $action = 'action_' . ($action || 'upfiles');
   return $self->$action;
 }
 
@@ -126,34 +125,53 @@ sub action_help {
   return 0;
 }
 
-sub action_all {
-  my ($self) = @_;
-  $self->do_config_file;
+sub action_upfiles {
+  my ($self, @files) = @_;
+  ### action_upfiles() ...
+  ### @ARGV
 
-  my $kbytes = POSIX::ceil ($self->{'total_size'} / 1024);
-  print __xn('{count} change,',
-             '{count} changes,',
-             $self->{'change_count'},
-             count => $self->{'change_count'});
-  print __xn(" {count} file, total size {kbytes}k (in 1024 byte blocks)\n",
-             " {count} files, total size {kbytes}k (in 1024 byte blocks)\n",
-             $self->{'total_count'},
-             count  => $self->{'total_count'},
-             kbytes => $kbytes);
+  if (@ARGV) {
+    # files given on command line
+    @files = @ARGV;
+    @files = map {File::Spec->rel2abs($_)} @files;
+    ### @files
+    @files = map {$_, parent_directories($_)} @files;
+    ### @files
+    my %hash;
+    @hash{@files} = (); # hash slice
+    ### %hash
+    local $self->{'action_files_hash'} = \%hash;
+    $self->do_config_file;
+
+  } else {
+    # all files
+    $self->do_config_file;
+
+    my $kbytes = POSIX::ceil ($self->{'total_size'} / 1024);
+    print __xn('{count} change,',
+               '{count} changes,',
+               $self->{'change_count'},
+               count => $self->{'change_count'});
+    print __xn(" {count} file, total size {kbytes}k (in 1024 byte blocks)\n",
+               " {count} files, total size {kbytes}k (in 1024 byte blocks)\n",
+               $self->{'total_count'},
+               count  => $self->{'total_count'},
+               kbytes => $kbytes);
+  }
   return 0;
 }
 
-sub action_f {
-  my ($self, @files) = @_;
-  ### action_f(): \@ARGV
-
-  @files = map {File::Spec->rel2abs($_)} @ARGV;
-  my %hash;
-  @hash{@files} = (); # hash slice
-  ### %hash
-  local $self->{'action_files_hash'} = \%hash;
-  $self->do_config_file;
-  return 0;
+# return a list of the directory and all parent directories of $filename
+sub parent_directories {
+  my ($filename) = @_;
+  my @ret;
+  for (;;) {
+    my $parent = File::Spec->rel2abs(File::Basename::dirname($filename));
+    last if $parent eq $filename;
+    push @ret, $parent;
+    $filename = $parent;
+  }
+  return @ret;
 }
 
 #------------------------------------------------------------------------------
@@ -187,7 +205,7 @@ sub config_filename {
     require File::HomeDir;
     my $homedir = File::HomeDir->my_home
       // croak __('No home directory for config file (File::HomeDir)');
-    return File::Spec->catfile ($homedir, CONFIG_FILENAME);
+    return File::Spec->catfile ($homedir, $self->CONFIG_FILENAME);
   };
 }
 
@@ -272,7 +290,7 @@ sub dbh {
         ("SELECT value FROM extra WHERE key='database-schema-version'")
       };
     $dbversion ||= 0;
-    if ($dbversion < DATABASE_SCHEMA_VERSION) {
+    if ($dbversion < $self->DATABASE_SCHEMA_VERSION) {
       $self->_upgrade_database ($dbh, $dbversion, $db_filename);
     }
   }
@@ -306,7 +324,7 @@ HERE
   $dbh->do ("INSERT OR REPLACE INTO extra (key,value)
              VALUES ('database-schema-version',?)",
             undef,
-            DATABASE_SCHEMA_VERSION);
+            $self->DATABASE_SCHEMA_VERSION);
 }
 
 
@@ -337,9 +355,9 @@ sub upfiles {
   if ($self->{'verbose'}) {
     # TRANSLATORS: any need to translate this? maybe the -> arrow
     print __x("{localdir} -> {username}\@{hostname} {remotedir}\n",
-              localdir => $local_dir,
-              username => $self->{'username'},
-              hostname => $self->{'host'},
+              localdir  => $local_dir,
+              username  => $self->{'username'},
+              hostname  => $self->{'host'},
               remotedir => $remote_dir);
   }
 
@@ -358,7 +376,7 @@ sub upfiles {
                  localdir => $local_dir,
                  strerror => "$!");
 
-  my $db_filename = File::Spec->catfile ($local_dir, DATABASE_FILENAME);
+  my $db_filename = File::Spec->catfile ($local_dir, $self->DATABASE_FILENAME);
   my $dbh = $self->dbh ($db_filename);
 
   {
@@ -388,9 +406,9 @@ sub upfiles {
     my $fullname = $File::Find::name;
     my $basename = File::Basename::basename ($fullname);
 
-    if ($basename eq DATABASE_FILENAME
-        # .sqdb-journal file if interrupted on previous run
-        || $basename eq DATABASE_FILENAME.'-journal') {
+    if ($basename eq $self->DATABASE_FILENAME
+        # ".upfiles.sqdb-journal" file if interrupted on previous run
+        || $basename eq $self->DATABASE_FILENAME.'-journal') {
       $File::Find::prune = 1;
       return;
     }
@@ -609,10 +627,11 @@ sub stat_mtime {
 
 # $st is a File::stat.  Return the disk space occupied by the file, based on
 # the file size rounded up to the next whole block.
+#  my $blksize = $st->blksize || 1024;
 sub st_space {
   my ($st) = @_;
-  # my $blksize = $st->blksize || 1024;
   my $blksize = 1024;
+  require Math::Round;
   return scalar (Math::Round::nhimult ($blksize, $st->size));
 }
 
