@@ -8,6 +8,8 @@ debian/rules
 debian/source/format
 debian/watch
 devel/gettext-strerror.pl
+devel/lib/Regexp/Common/Emacs.pm
+devel/lib/Regexp/Common/regexp-emacs.pl
 devel/misc.pl
 devel/mtime.pl
 devel/stou.pl

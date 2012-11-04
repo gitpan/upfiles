@@ -48,6 +48,6 @@ MyMakeMakerExtras::WriteMakefile
        license  => 'http://www.gnu.org/licenses/gpl.html',
      },
      no_index => { directory=>['devel'],
-                 }
+                 },
    },
   );

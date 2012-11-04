@@ -51,14 +51,13 @@ then DPKG_ARCH=all
 else DPKG_ARCH=`dpkg --print-architecture`
 fi
 
+# programs named after the dist, libraries named with "lib"
+# gtk2-ex-splash and wx-perl-podbrowser programs are lib too though
 DEBNAME=`echo $DISTNAME | tr A-Z a-z`
-if test -z "$EXE_FILES"
-then
-  case "$EXE_FILES" in
-  gtk2*) ;;
-  *) DEBNAME="lib${DEBNAME}-perl" ;;
-  esac
-fi
+case "$EXE_FILES" in
+gtk2-ex-splash|wx-perl-podbrowser|'')
+  DEBNAME="lib${DEBNAME}-perl" ;;
+esac
 
 DEBVNAME="${DEBNAME}_$VERSION-1"
 DEBFILE="${DEBVNAME}_$DPKG_ARCH.deb"

@@ -17,16 +17,19 @@
 # You should have received a copy of the GNU General Public License along
 # with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
 
+use 5.010;
 use strict;
 use warnings;
 use App::Upfiles;
 
-our $VERSION = 6;
+our $VERSION = 7;
 
 my $upf = App::Upfiles->new;
 exit $upf->command_line;
 
 __END__
+
+=for stopwords upfiles Upfiles username SQLite toplevel mtimes symlinks arrayref filenames versa PID filename tuxfamily Ryde
 
 =head1 NAME
 

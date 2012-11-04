@@ -29,16 +29,18 @@ use warnings;
 use Carp;
 use File::Spec;
 use File::stat;
+use List::Util 'max';
 use POSIX ();
 use Locale::TextDomain ('App-Upfiles');
 
 use FindBin;
 my $progname = $FindBin::Script;
 
+our $VERSION = 7;
+
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-our $VERSION = 6;
 
 use constant { DATABASE_FILENAME       => '.upfiles.sqdb',
                DATABASE_SCHEMA_VERSION => 1,
@@ -51,14 +53,14 @@ use constant { DATABASE_FILENAME       => '.upfiles.sqdb',
                                           ],
              };
 
-
 #------------------------------------------------------------------------------
 sub new {
   my $class = shift;
-  return bless { total_size   => 0,
-                 total_count  => 0,
-                 change_count => 0,
-                 verbose      => 1,
+  return bless { total_size_kbytes  => 0,
+                 total_count        => 0,
+                 change_count       => 0,
+                 change_size        => 0,
+                 verbose            => 1,
                  exclude_regexps_default => $class->EXCLUDE_REGEXPS_DEFAULT,
                  @_ }, $class;
 }
@@ -147,18 +149,17 @@ sub action_upfiles {
     # all files
     $self->do_config_file;
 
-    my $kbytes = POSIX::ceil ($self->{'total_size'} / 1024);
-    print __xn('{count} change,',
-               '{count} changes,',
-               $self->{'change_count'},
-               count => $self->{'change_count'});
-    print __xn(" {count} file, total size {kbytes}k (in 1024 byte blocks)\n",
-               " {count} files, total size {kbytes}k (in 1024 byte blocks)\n",
-               $self->{'total_count'},
-               count  => $self->{'total_count'},
-               kbytes => $kbytes);
+    print __x("changed {change_count} files {change_size_kbytes}k, total {total_count} files {total_size_kbytes}k (in 1024 byte blocks)\n",
+              change_count       => $self->{'change_count'},
+              change_size_kbytes => _bytes_to_kbytes($self->{'change_size'}),
+              total_count        => $self->{'total_count'},
+              total_size_kbytes  => $self->{'total_size_kbytes'});
   }
   return 0;
+}
+sub _bytes_to_kbytes {
+  my ($bytes) = @_;
+  return POSIX::ceil($bytes/1024);
 }
 
 # return a list of the directory and all parent directories of $filename
@@ -386,7 +387,8 @@ sub upfiles {
     if (! $remote_mtime) {
       my $unslashed = $remote_dir;
       $unslashed =~ s{/$}{};
-      if ($self->{'verbose'}) { print "MKD toplevel  $remote_dir\n"; }
+      if ($self->{'verbose'}) { print __x("MKD toplevel  {dirname}\n",
+                                          dirname => $remote_dir); }
 
       unless ($self->{'dry_run'}) {
         $self->ftp_connect;
@@ -429,7 +431,7 @@ sub upfiles {
       || croak __x("Cannot stat {filename}: {strerror}",
                    filename => $fullname,
                    strerror => $!);
-    $self->{'total_size'} += st_space($st);
+    $self->{'total_size_kbytes'} += _bytes_to_kbytes($st->size);
     $self->{'total_count'}++;
 
     my $relname = File::Spec->abs2rel ($fullname, $local_dir);
@@ -489,7 +491,8 @@ sub upfiles {
         my $unslashed = $filename;
         $unslashed =~ s{/$}{};
         if ($self->{'verbose'}) {
-          print "MKD  $filename\n";
+          print __x("MKD  {dirname}\n",
+                    dirname => $filename);
         }
         $self->{'change_count'}++;
         $any_changes = 1;
@@ -503,11 +506,18 @@ sub upfiles {
 
       } else {
         # file, must exist and same modtime
+        my $size_bytes = -s $filename;
         if ($self->{'verbose'}) {
-          my $kbytes = file_size_kbytes($filename);
-          print "PUT  $filename [${kbytes}k]\n";
+          my $size_kbytes = max (0.1, $size_bytes/1024);
+          $size_kbytes = sprintf('%.*f',
+                                 ($size_kbytes >= 10 ? 0 : 1), # decimals
+                                 $size_kbytes);
+          print __x("PUT  {filename} [{size_kbytes}k]\n",
+                    filename    => $filename,
+                    size_kbytes => $size_kbytes);
         }
         $self->{'change_count'}++;
+        $self->{'change_size'} += $size_bytes;
         $any_changes = 1;
         next if $self->{'dry_run'};
 
@@ -574,7 +584,8 @@ sub upfiles {
     if ($isdir) {
       my $unslashed = $filename;
       $unslashed =~ s{/$}{};
-      if ($self->{'verbose'}) { print "RMD  $filename\n"; }
+      if ($self->{'verbose'}) { print __x("RMD  {filename}\n",
+                                          filename => $filename); }
       $self->{'change_count'}++;
       $any_changes = 1;
       next if $self->{'dry_run'};
@@ -584,7 +595,8 @@ sub upfiles {
         or warn "Cannot rmdir $unslashed: ", $self->ftp->message;
 
     } else {
-      if ($self->{'verbose'}) { print "DELE $filename\n"; }
+      if ($self->{'verbose'}) { print __x("DELE {filename}\n",
+                                          filename => $filename); }
       $self->{'change_count'}++;
       $any_changes = 1;
       next if $self->{'dry_run'};
@@ -602,7 +614,7 @@ sub upfiles {
                  ftperr   => $self->ftp->message);
 
   if (! $any_changes) {
-    if ($self->{'verbose'}) { print __x("  no changes\n"); }
+    if ($self->{'verbose'}) { print '  ',__('no changes'),"\n"; }
   }
 
   return 1;
@@ -612,11 +624,11 @@ sub upfiles {
 #------------------------------------------------------------------------------
 # misc helpers
 
-# return size of $filename in kbytes
-sub file_size_kbytes {
-  my ($filename) = @_;
-  return POSIX::ceil ((-s $filename) / 1024);
-}
+# # return size of $filename in kbytes
+# sub file_size_kbytes {
+#   my ($filename) = @_;
+#   return _bytes_to_kbytes(-s $filename);
+# }
 
 # return st_mtime of $filename
 sub stat_mtime {
@@ -650,6 +662,8 @@ sub timestamp_to_timet {
 
 1;
 __END__
+
+=for stopwords Upfiles Ryde
 
 =head1 NAME
 
@@ -703,4 +717,3 @@ You should have received a copy of the GNU General Public License along with
 Upfiles.  If not, see L<http://www.gnu.org/licenses/>.
 
 =cut
-

@@ -21,7 +21,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = 6;
+our $VERSION = 7;
 
 our $upf;
 
@@ -32,6 +32,8 @@ sub upfiles {
 
 1;
 __END__
+
+=for stopwords conf upfiles Upfiles Ryde
 
 =head1 NAME
 

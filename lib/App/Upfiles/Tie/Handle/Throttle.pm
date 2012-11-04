@@ -16,12 +16,13 @@
 # with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
 
 package App::Upfiles::Tie::Handle::Throttle;
+use 5.004;
 use strict;
-use warnings;
 use Time::HiRes;
 use List::Util 'min';
 
-our $VERSION = 6;
+use vars '$VERSION';
+$VERSION = 7;
 
 # uncomment this to run the ### lines
 #use Smart::Comments;
