@@ -22,7 +22,7 @@ use Time::HiRes;
 use List::Util 'min';
 
 use vars '$VERSION';
-$VERSION = 7;
+$VERSION = 8;
 
 # uncomment this to run the ### lines
 #use Smart::Comments;
@@ -159,3 +159,7 @@ sub PRINTF {
 
 1;
 __END__
+
+# =head1 SEE ALSO
+# 
+# L<throttle(1)>

@@ -17,6 +17,9 @@ along with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
+Version 8, November 2012
+    - use Regexp::Common::Emacs
+
 Version 7, November 2012
     - print size of changes
 

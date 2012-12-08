@@ -21,10 +21,8 @@ use 5.010;
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
-use lib 'inc';
-use MyMakeMakerExtras;
 
-MyMakeMakerExtras::WriteMakefile
+WriteMakefile
   (NAME         => 'upfiles',
    ABSTRACT     => 'Upload files to a remote FTP server.',
    VERSION_FROM => 'lib/App/Upfiles.pm',
@@ -38,6 +36,8 @@ MyMakeMakerExtras::WriteMakefile
                     'File::HomeDir' => 0,
                     'Locale::TextDomain' => 0,
                     'Math::Round' => 0,
+                    'Regexp::Common' => 0,
+                    'Regexp::Common::Emacs' => 0,
                     'URI' => 0,
                    },
    MIN_PERL_VERSION => '5.010',

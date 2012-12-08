@@ -15,37 +15,33 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 842745cb706f8f2126506f544492f7a80dbe29b3 COPYING
-SHA1 be618f0614cc3b3869e4e211f967b246baad58a3 Changes
-SHA1 3ad8dc1320b881450b2db4b275d2801763ab823f MANIFEST
+SHA1 c8939d9a467ef9c2458de93dc7a41c71782f763a Changes
+SHA1 6d1aa62405323e7eff10dbf262432f38e808fd56 MANIFEST
 SHA1 b758f740af57256154bbf4e1f8a760a1b9f9dfe1 MANIFEST.SKIP
-SHA1 553a23488c98ae0058f6b27bcf85ac6fae0e87ff META.yml
-SHA1 9c9317665c48664d3e498d41bf92f230ec4abecd Makefile.PL
-SHA1 671c56d4e66fc34fab5ea06785b19b31736f47c9 debian/changelog
+SHA1 0ea36efc774868a2564275e2f286f53d8d28e436 META.yml
+SHA1 cf4fd41df6fb68125930067450d045a21a4f98ad Makefile.PL
+SHA1 b30189bf8243a66a233eacb9eab8b1c66605883f debian/changelog
 SHA1 ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4 debian/compat
-SHA1 2817ba3ebcc97ba10b460d29507c4ec6c250a940 debian/control
+SHA1 28a31a92b13d6a8c289442221af791c6b8ec49a6 debian/control
 SHA1 88f54a9b1b7f7d848f40b738043a60b52c909cc9 debian/copyright
 SHA1 26c29238677ac41d67aa67a266241a1f9bb63e36 debian/rules
 SHA1 61652cd1568dcf2614df833eba241755eee34e89 debian/source/format
 SHA1 059224714974312811e753c8ff4326fcbbbdd7e1 debian/watch
 SHA1 e1077ea1e7bdd00b9ce6e659c0a5e793e9615c28 devel/gettext-strerror.pl
-SHA1 4918c836ec5b75382bdd9770b400abc175b592df devel/lib/Regexp/Common/Emacs.pm
-SHA1 68896171dc28f7394f00f0a42a797e16f74cf4ee devel/lib/Regexp/Common/regexp-emacs.pl
 SHA1 c7300a8ef3323bbd7055107873e93995a1591363 devel/misc.pl
 SHA1 4e2f9384e3479d2a1e7a6c7cbd9ca26a08210f0e devel/mtime.pl
 SHA1 06610c78de1349036c005e3e6b085400f1ab1e3c devel/stou.pl
 SHA1 7d1c56c25df5167e37d0b0c68f45f60dfdacb3a9 devel/upf.conf
 SHA1 2edb2c8e62707cd2f2fadc0137f0cfb9a520e585 devel/upf.pl
-SHA1 355b182e01f918114bc6c85967b2de758e1dc9fe inc/MyMakeMakerExtras.pm
-SHA1 7a988b2aa7ed09f1cb9029a1ef3f0e2139dca0cf inc/my_pod2html
-SHA1 ae980f9d61a827c946caa2b8b2e6ed24230150e8 lib/App/Upfiles.pm
-SHA1 3f08c3b4f8f1586bc906d562ebef8cbb063ed2a5 lib/App/Upfiles/Conf.pm
-SHA1 bd3df6db9cd5cc38d0a3d09c42b48d4d8cac3f7d lib/App/Upfiles/FTPlazy.pm
-SHA1 6f5a5c1aeccf13c5f8edd5e0af1d375dd0fb7814 lib/App/Upfiles/Tie/Handle/Throttle.pm
-SHA1 88f20975a45db61232d9bd2536588f7499e56b9b t/Conf.t
-SHA1 1ddff486682e4ecd156bcd342f095fab2d29e615 t/FTPlazy.t
+SHA1 97fcff7fa4611c1950583f5e31670f0ea32a5b25 lib/App/Upfiles.pm
+SHA1 b97821917ab8ed711ed673d8188807168587c455 lib/App/Upfiles/Conf.pm
+SHA1 91b5a33b7b8802d0eb8dc6240b18e7c304e90e5e lib/App/Upfiles/FTPlazy.pm
+SHA1 2d363968da139d83813433deaf34ca7e39ac2012 lib/App/Upfiles/Tie/Handle/Throttle.pm
+SHA1 c61f0d27f88e8359fb68193c7ad0f9a69abaeb67 t/Conf.t
+SHA1 5faf7b81a64769fee8056101b8040fbd60744727 t/FTPlazy.t
 SHA1 3855de075da37f5bc4e6a5534b2f00cc14872a98 t/MyTestHelpers.pm
-SHA1 3506f1c205f22f68e5dd9b0ab48cc94502d382fa t/Upfiles.t
-SHA1 a92bf78a91e179de69608bb6f3d92699b6fd97c5 upfiles
+SHA1 7397be98e98e780ab55cea4b6697e3a5ca5afa6e t/Upfiles.t
+SHA1 e72b0e24a77797e50644543d3a2673df6ec2ad13 upfiles
 SHA1 811028548aa4b360b5086d1af3150f9dde348aa6 xt/0-META-read.t
 SHA1 c9e7a47e1f397eb5f46d7e4ef21754d9df76e36e xt/0-Test-ConsistentVersion.t
 SHA1 d9e7f38a8dcfdb76c56951e4214be8eeda2e2289 xt/0-Test-DistManifest.t
@@ -58,15 +54,16 @@ SHA1 aeb6f41dfae96d04459448f6c3e3dee44691e722 xt/0-no-debug-left-on.t
 SHA1 84a47c1d71fd58797a2754030998dfb673b62811 xtools/my-check-copyright-years.sh
 SHA1 bfb75ffb7a834c345288e01f561b12695f191d12 xtools/my-check-file-part-of.sh
 SHA1 1f28ea8151b0f8554e5ab4e5bbcf1c5371f788eb xtools/my-check-spelling.sh
-SHA1 89f7cb24bd2da7e994c3b239b2f4dc3b0380aed8 xtools/my-deb.sh
+SHA1 59164eaeb61442a799e88fbd2cad0b503588da32 xtools/my-deb.sh
 SHA1 2db0a23176de55a8ee8f1643f239aeaa2bcf4fa1 xtools/my-diff-prev.sh
 SHA1 e4a15f9b4bcf1d087de2d9ed8e87bf92b0469a6c xtools/my-manifest.sh
 SHA1 4db9c30b1fc96b04a794218ca19561b368f59679 xtools/my-pc.sh
 SHA1 631dabf52c65a7b8613d6565fef2c2416ebba7e9 xtools/my-wunused.sh
+SHA1 7a988b2aa7ed09f1cb9029a1ef3f0e2139dca0cf xtools/my_pod2html
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iD8DBQFQlauILFMCIV9q3ToRAjT5AKCtODkIJMRNEkscGRBwvTG6Jl7edQCgic/U
-gSSnFy6bdCLYjX/J8j+o5hQ=
-=1WZP
+iD8DBQFQw6ffLFMCIV9q3ToRAp8RAJ9yFGoCSb6Y5ViEQfZxzvVLfjuZNACeI9gN
+foqz1TXLUpgWR6GGr7hWxEk=
+=+dLu
 -----END PGP SIGNATURE-----

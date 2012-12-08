@@ -59,7 +59,7 @@ gtk2-ex-splash|wx-perl-podbrowser|'')
   DEBNAME="lib${DEBNAME}-perl" ;;
 esac
 
-DEBVNAME="${DEBNAME}_$VERSION-1"
+DEBVNAME="${DEBNAME}_$VERSION-0.1"
 DEBFILE="${DEBVNAME}_$DPKG_ARCH.deb"
 
 # ExtUtils::MakeMaker 6.42 of perl 5.10.0 makes "$(DISTVNAME).tar.gz" depend
@@ -112,7 +112,7 @@ fi
 dpkg-source -b $DEBNAME-$VERSION \
                ${DEBNAME}_$VERSION.orig.tar.gz; \
 lintian -I -i \
-  --suppress-tags empty-debian-diff,debian-rules-uses-deprecated-makefile *.dsc
+  --suppress-tags maintainer-upload-has-incorrect-version-number,empty-debian-diff,debian-rules-uses-deprecated-makefile *.dsc
 cd /
 rm -rf $TEMP
 

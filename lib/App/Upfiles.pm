@@ -32,11 +32,12 @@ use File::stat;
 use List::Util 'max';
 use POSIX ();
 use Locale::TextDomain ('App-Upfiles');
+use Regexp::Common 'no_defaults','Emacs';
 
 use FindBin;
 my $progname = $FindBin::Script;
 
-our $VERSION = 7;
+our $VERSION = 8;
 
 # uncomment this to run the ### lines
 #use Smart::Comments;
@@ -47,10 +48,10 @@ use constant { DATABASE_FILENAME       => '.upfiles.sqdb',
 
                CONFIG_FILENAME => '.upfiles.conf',
 
-               EXCLUDE_REGEXPS_DEFAULT => [ qr{~$}s,        # emacs backups
-                                            qr{(^|/)\#}s,   # emacs autosave
-                                            qr{(^|/)\.\#}s, # emacs locks
-                                          ],
+               # emacs backups, autosaves, lockfiles
+               EXCLUDE_BASENAME_REGEXPS_DEFAULT => [ $RE{Emacs}{skipfile} ],
+
+               EXCLUDE_REGEXPS_DEFAULT => [],
              };
 
 #------------------------------------------------------------------------------
@@ -61,7 +62,13 @@ sub new {
                  change_count       => 0,
                  change_size        => 0,
                  verbose            => 1,
-                 exclude_regexps_default => $class->EXCLUDE_REGEXPS_DEFAULT,
+
+                 exclude_regexps_default
+                 => $class->EXCLUDE_REGEXPS_DEFAULT,
+
+                 exclude_basename_regexps_default
+                 => $class->EXCLUDE_BASENAME_REGEXPS_DEFAULT,
+
                  @_ }, $class;
 }
 
@@ -353,6 +360,13 @@ sub upfiles {
     foreach my $re (@exclude_regexps) { print "  $re\n"; }
   }
 
+  my @exclude_basename_regexps = (@{$self->EXCLUDE_BASENAME_REGEXPS_DEFAULT},
+                                  @{$option{'exclude_basename_regexps'} // []});
+  if ($self->{'verbose'} >= 3) {
+    print "exclude basename regexps\n";
+    foreach my $re (@exclude_basename_regexps) { print "  $re\n"; }
+  }
+
   if ($self->{'verbose'}) {
     # TRANSLATORS: any need to translate this? maybe the -> arrow
     print __x("{localdir} -> {username}\@{hostname} {remotedir}\n",
@@ -416,6 +430,12 @@ sub upfiles {
     }
     foreach my $exclude (@{$option{'exclude'}}) {
       if ($basename eq $exclude) {
+        $File::Find::prune = 1;
+        return;
+      }
+    }
+    foreach my $re (@exclude_basename_regexps) {
+      if (defined $re && $basename =~ $re) {
         $File::Find::prune = 1;
         return;
       }

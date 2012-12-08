@@ -25,7 +25,7 @@ use Net::FTP;
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-our $VERSION = 7;
+our $VERSION = 8;
 
 sub new {
   my $class = shift;
