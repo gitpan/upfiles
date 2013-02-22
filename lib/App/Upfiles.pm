@@ -1,4 +1,4 @@
-# Copyright 2009, 2010, 2011, 2012 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012, 2013 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -37,7 +37,7 @@ use Regexp::Common 'no_defaults','Emacs';
 use FindBin;
 my $progname = $FindBin::Script;
 
-our $VERSION = 8;
+our $VERSION = 9;
 
 # uncomment this to run the ### lines
 #use Smart::Comments;
@@ -233,7 +233,7 @@ sub ftp_connect {
   $ftp->ensure_all
     or croak __x("ftp error on {hostname}: {ftperr}",
                  hostname => $ftp->host,
-                 ftperr => $ftp->message);
+                 ftperr   => scalar($ftp->message));
 }
 
 
@@ -382,7 +382,7 @@ sub upfiles {
    && $ftp->binary)
     or croak __x("ftp error on {hostname}: {ftperr}",
                  hostname => $self->{'host'},
-                 ftperr   => $self->ftp->message);
+                 ftperr   => scalar($self->ftp->message));
 
   # go to the directory to notice if it doesn't exist, before attempting to
   # open/create the database
@@ -409,7 +409,7 @@ sub upfiles {
         $self->ftp->mkdir ($unslashed, 1)
           // croak __x("Cannot make directory {dirname}: {ftperr}",
                        dirname => $remote_dir,
-                       ftperr  => $self->ftp->message);
+                       ftperr  => scalar($self->ftp->message));
       }
       $self->db_set_mtime ($dbh, $option{'remote'}, '/', 1, 1);
     }
@@ -522,7 +522,7 @@ sub upfiles {
         $self->ftp->mkdir ($unslashed, 1)
           // croak __x("Cannot make directory {dirname}: {ftperr}",
                        dirname => $filename,
-                       ftperr => $self->ftp->message);
+                       ftperr  => scalar($self->ftp->message));
 
       } else {
         # file, must exist and same modtime
@@ -574,7 +574,7 @@ sub upfiles {
           }
           $put or croak __x("Error sending {filename}: {ftperr}",
                             filename => $filename,
-                            ftperr   => $self->ftp->message);
+                            ftperr   => scalar($self->ftp->message));
         }
 
         if ($self->{'verbose'} >= 2) {
@@ -583,7 +583,7 @@ sub upfiles {
         $self->ftp->rename ($tmpname, $filename)
           or croak __x("Cannot rename {filename}: {ftperr}",
                        filename => $tmpname,
-                       ftperr   => $self->ftp->message);
+                       ftperr   => scalar($self->ftp->message));
         $self->db_delete_mtime ($dbh, $option{'remote'}, $tmpname);
       }
     }
@@ -631,7 +631,7 @@ sub upfiles {
   $ftp->all_ok
     or croak __x("ftp error on {hostname}: {ftperr}",
                  hostname => $self->{'host'},
-                 ftperr   => $self->ftp->message);
+                 ftperr   => scalar($self->ftp->message));
 
   if (! $any_changes) {
     if ($self->{'verbose'}) { print '  ',__('no changes'),"\n"; }
@@ -722,7 +722,7 @@ L<http://user42.tuxfamily.org/upfiles/index.html>
 
 =head1 LICENSE
 
-Copyright 2009, 2010, 2011, 2012 Kevin Ryde
+Copyright 2009, 2010, 2011, 2012, 2013 Kevin Ryde
 
 Upfiles is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software

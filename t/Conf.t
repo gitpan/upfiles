@@ -29,7 +29,7 @@ require App::Upfiles::Conf;
 
 #------------------------------------------------------------------------------
 {
-  my $want_version = 8;
+  my $want_version = 9;
   is ($App::Upfiles::Conf::VERSION, $want_version, 'VERSION variable');
   is (App::Upfiles::Conf->VERSION,  $want_version, 'VERSION class method');
   ok (eval { App::Upfiles::Conf->VERSION($want_version); 1 },

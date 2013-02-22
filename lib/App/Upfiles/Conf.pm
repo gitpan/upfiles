@@ -21,7 +21,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = 8;
+our $VERSION = 9;
 
 our $upf;
 

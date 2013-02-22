@@ -22,7 +22,7 @@ use strict;
 use warnings;
 use App::Upfiles;
 
-our $VERSION = 8;
+our $VERSION = 9;
 
 my $upf = App::Upfiles->new;
 exit $upf->command_line;
