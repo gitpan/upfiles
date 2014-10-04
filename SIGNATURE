@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.68.
+signed via the Module::Signature module, version 0.73.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -15,55 +15,57 @@ not run its Makefile.PL or Build.PL.
 Hash: SHA1
 
 SHA1 842745cb706f8f2126506f544492f7a80dbe29b3 COPYING
-SHA1 dfc908237b047a8bcf88d159daaf01a78232a321 Changes
-SHA1 6d1aa62405323e7eff10dbf262432f38e808fd56 MANIFEST
-SHA1 b758f740af57256154bbf4e1f8a760a1b9f9dfe1 MANIFEST.SKIP
-SHA1 3043727a5c91eca092ab61dabdd4350799dec682 META.yml
-SHA1 cf4fd41df6fb68125930067450d045a21a4f98ad Makefile.PL
-SHA1 b9cd7f06f75e0ad7f6e42df45167deb11ca35a2d debian/changelog
+SHA1 e861c5977996c9fcade25e55105f76f8fe795b37 Changes
+SHA1 a66ef92352ff9a1b4893b52624d977ef2718f287 MANIFEST
+SHA1 d73f6910c2283dca6aa23a5d820950745dcb76f6 MANIFEST.SKIP
+SHA1 53b7ec470c06bcc361026b309ba8e8305d83d181 META.json
+SHA1 95a683b01921d41c2d7937171d8b9fbf2289f03e META.yml
+SHA1 14c965dcb1ced71860b9bf345fce37ed15451c02 Makefile.PL
+SHA1 7b74ca514b0d1872d35d711e3d0c28ea9ad4e31f debian/changelog
 SHA1 ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4 debian/compat
-SHA1 28a31a92b13d6a8c289442221af791c6b8ec49a6 debian/control
-SHA1 88f54a9b1b7f7d848f40b738043a60b52c909cc9 debian/copyright
-SHA1 26c29238677ac41d67aa67a266241a1f9bb63e36 debian/rules
+SHA1 d165a4e5a4db9dc0d4ea65c6dc47d0f1da35c593 debian/control
+SHA1 416339c7853851d4457ad8ce4011c50988357432 debian/copyright
+SHA1 87db2619916526f78fd4492be093437400b08bee debian/rules
 SHA1 61652cd1568dcf2614df833eba241755eee34e89 debian/source/format
 SHA1 059224714974312811e753c8ff4326fcbbbdd7e1 debian/watch
 SHA1 e1077ea1e7bdd00b9ce6e659c0a5e793e9615c28 devel/gettext-strerror.pl
-SHA1 c7300a8ef3323bbd7055107873e93995a1591363 devel/misc.pl
+SHA1 59642fca483913685de735a05d7177a72091ae78 devel/misc.pl
 SHA1 4e2f9384e3479d2a1e7a6c7cbd9ca26a08210f0e devel/mtime.pl
-SHA1 06610c78de1349036c005e3e6b085400f1ab1e3c devel/stou.pl
-SHA1 7d1c56c25df5167e37d0b0c68f45f60dfdacb3a9 devel/upf.conf
-SHA1 2edb2c8e62707cd2f2fadc0137f0cfb9a520e585 devel/upf.pl
-SHA1 3872e2b907bc5622740893241dd79c57aa322dd7 lib/App/Upfiles.pm
-SHA1 35add8c3e5eb1b38c978a98b380cf9391bb3c545 lib/App/Upfiles/Conf.pm
-SHA1 2ae774dfae2e1fb502b1106684c25195d5cab62a lib/App/Upfiles/FTPlazy.pm
-SHA1 0c3b707f171ab1ed971e29af4e61c90988caf152 lib/App/Upfiles/Tie/Handle/Throttle.pm
-SHA1 9d18f3f76a9e352f2b3644a0a4fc0b74e0aa1c12 t/Conf.t
-SHA1 03f77348ef22733ad43e2f9c7a3a9e69717d790b t/FTPlazy.t
+SHA1 d2e311f79c951f58b1ff6d62e6eec12b1ff479a5 devel/proftpd-anon.conf
+SHA1 6b663a65db7ba6f0b958ca75a404b4e1923c35cf devel/stou.pl
+SHA1 1ddc2173b47b725a252cef3c73c5a9abe783a2f5 devel/upf.conf
+SHA1 3285e8b38c5e29016fc82b3953263c5ec0f59017 devel/upf.pl
+SHA1 b668982484d37df9742402496ba4ae88a0d6375a lib/App/Upfiles.pm
+SHA1 8aa4351384ca1f6215086c45c5224cdfdc0f1f07 lib/App/Upfiles/Conf.pm
+SHA1 fbb4085aaea15680e3790417c3aba4287a6bf340 lib/App/Upfiles/FTPlazy.pm
+SHA1 8ca9e54590fd362fd4ed5474f1c191937edbd5da lib/App/Upfiles/Tie/Handle/Throttle.pm
+SHA1 f7b6c8f5121ddafbbbfa44602cc4fc6e0a42d6f1 t/Conf.t
+SHA1 dd4bf2447541de048698973c144aeae58acb2dad t/FTPlazy.t
 SHA1 3855de075da37f5bc4e6a5534b2f00cc14872a98 t/MyTestHelpers.pm
-SHA1 5f17a2bd4007d067c6357bd2fdfba86051d1dfd7 t/Upfiles.t
-SHA1 9ffaaf909c63d471daff29ea94d37fe43ff40607 upfiles
-SHA1 811028548aa4b360b5086d1af3150f9dde348aa6 xt/0-META-read.t
+SHA1 2530b318c54d12cbe511fac3ba0bd894a6e1153b t/Upfiles.t
+SHA1 c2f2a62c9b84a492504d00897cf70164bbbcef0c upfiles
+SHA1 f2ceb7bb4bf68bd24728b90918e63d251fd06183 xt/0-META-read.t
 SHA1 c9e7a47e1f397eb5f46d7e4ef21754d9df76e36e xt/0-Test-ConsistentVersion.t
 SHA1 d9e7f38a8dcfdb76c56951e4214be8eeda2e2289 xt/0-Test-DistManifest.t
 SHA1 9496e4a2a2734c7093ab6961900dd7a55800976e xt/0-Test-Pod.t
 SHA1 083242d959c1a9242c874982e4585872a95bec93 xt/0-Test-Synopsis.t
-SHA1 ec454b1b524d2d0b35e5a7d8292ad13d82becab5 xt/0-Test-YAML-Meta.t
+SHA1 63abbc3297914cd38081e95588fd794f9d1f0306 xt/0-Test-YAML-Meta.t
 SHA1 42c04ae557ab86d3488c647ea17bd37cd2bd7d6a xt/0-exe-shebang.t
-SHA1 2fb2ce60ce5c740d1eb7e3b55a96f3ccb84d38c3 xt/0-file-is-part-of.t
+SHA1 7bc810750906ae91a13b16c7bd833dd6e1c9741b xt/0-file-is-part-of.t
 SHA1 aeb6f41dfae96d04459448f6c3e3dee44691e722 xt/0-no-debug-left-on.t
-SHA1 84a47c1d71fd58797a2754030998dfb673b62811 xtools/my-check-copyright-years.sh
+SHA1 92f32aa7a6bba4fe0ce6dc07a9c2581b67070232 xtools/my-check-copyright-years.sh
 SHA1 bfb75ffb7a834c345288e01f561b12695f191d12 xtools/my-check-file-part-of.sh
-SHA1 1f28ea8151b0f8554e5ab4e5bbcf1c5371f788eb xtools/my-check-spelling.sh
-SHA1 f3e50b961e575e060e35ddc4d94c7b3e6101d660 xtools/my-deb.sh
+SHA1 b12199bcc70c569ff43f8d8e2ea1c896f587c62f xtools/my-check-spelling.sh
+SHA1 fa07c8e559adbd1af5ba613e021991b0819fc7ba xtools/my-deb.sh
 SHA1 2db0a23176de55a8ee8f1643f239aeaa2bcf4fa1 xtools/my-diff-prev.sh
 SHA1 e4a15f9b4bcf1d087de2d9ed8e87bf92b0469a6c xtools/my-manifest.sh
-SHA1 4db9c30b1fc96b04a794218ca19561b368f59679 xtools/my-pc.sh
+SHA1 830acfc76ae9239a2c36143c437a3ec7c6736a0a xtools/my-pc.sh
 SHA1 f90084e1d6f95abb12eea896cd1cc850402d7726 xtools/my-wunused.sh
-SHA1 7a988b2aa7ed09f1cb9029a1ef3f0e2139dca0cf xtools/my_pod2html
+SHA1 2c31f38013695c85f0a75eb2c783989978aa298b xtools/my_pod2html
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+Version: GnuPG v1
 
-iD8DBQFRJqrJLFMCIV9q3ToRAiPSAJ9hndv6zBBciaWHHYw4+sqPYtBzLwCfcyRh
-B2M+kWj9TJbkQAUBIcguDYs=
-=hiTp
+iD8DBQFUL4jDLFMCIV9q3ToRAmYlAKCxcAHPKXN4TwFik8fYMn4LCn5gZgCbB/wk
++Phb3m064I6aZo+QA1LFDy8=
+=khHR
 -----END PGP SIGNATURE-----

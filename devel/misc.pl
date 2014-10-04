@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2009, 2010, 2012 Kevin Ryde
+# Copyright 2009, 2010, 2012, 2014 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -24,6 +24,43 @@ use Data::Dumper;
 
 # uncomment this to run the ### lines
 #use Smart::Comments;
+
+{
+  # SITE UTIME 200412312359 /path/to/some/file.txt
+
+  # pureftpd
+  # 214-The following SITE commands are recognized
+  #  ALIAS
+  #  CHMOD
+  #  IDLE
+  #  UTIME
+
+  require Net::FTP;
+  require Net::Cmd;
+  my $hostname = "localhost";
+  my $ftp = Net::FTP->new($hostname)
+    or die "Cannot connect: $@";
+  $ftp->login("anonymous",'')
+    or die "Cannot login: ", $ftp->message;
+
+  my $dirname = "tmp";
+  $ftp->cwd($dirname)
+    or die "Cannot cwd $dirname: ", $ftp->message;
+
+  my $ret = $ftp->site("xUTIME","20141231140000","foo.txt");
+  print "ret $ret UTIME: ", $ftp->message;
+  $ret == Net::Cmd::CMD_OK()
+    or die "Cannot SITE UTIME: ", $ftp->message;
+
+  {
+    my $lines = $ftp->dir()
+      or die "Cannot DIR: ", $ftp->message;
+    print scalar(@$lines)," directory lines\n";
+    foreach (@$lines) { print "$_\n"; }
+  }
+
+  exit 0;
+}
 
 {
   require Tie::StdHandle;

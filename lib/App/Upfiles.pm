@@ -1,4 +1,4 @@
-# Copyright 2009, 2010, 2011, 2012, 2013 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012, 2013, 2014 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -37,7 +37,7 @@ use Regexp::Common 'no_defaults','Emacs';
 use FindBin;
 my $progname = $FindBin::Script;
 
-our $VERSION = 9;
+our $VERSION = 10;
 
 # uncomment this to run the ### lines
 #use Smart::Comments;
@@ -340,6 +340,11 @@ HERE
 sub upfiles {
   my ($self, %option) = @_;
 
+  if (! exists $option{'copy_utime'}) {
+    # default
+    $option{'copy_utime'} = 'if_possible';
+  }
+
   if ($self->{'verbose'} >= 3) {
     require Data::Dumper;
     print Data::Dumper->new([\%option],['option'])->Sortkeys(1)->Dump;
@@ -578,13 +583,37 @@ sub upfiles {
         }
 
         if ($self->{'verbose'} >= 2) {
-          print "  now rename\n";
+          print "  rename\n";
         }
         $self->ftp->rename ($tmpname, $filename)
           or croak __x("Cannot rename {filename}: {ftperr}",
                        filename => $tmpname,
                        ftperr   => scalar($self->ftp->message));
         $self->db_delete_mtime ($dbh, $option{'remote'}, $tmpname);
+
+        if ($option{'copy_utime'} && $self->ftp->{'have_site_utime'}) {
+          my $utime = timet_to_utime($local_mtime);
+          if ($self->{'verbose'} >= 2) {
+            print "  UTIME $utime\n";
+          }
+          if ($self->ftp->site("UTIME",$utime,$filename) != 2) {
+            # not OK
+            my $code = $self->ftp->code;
+            my $message = $self->ftp->message;
+            if ($option{'copy_utime'} eq 'if_possible' && $code == 500) {
+              # SITE UTIME command unrecognised
+              $self->ftp->{'have_site_utime'} = 0;
+              if ($self->{'verbose'} >= 2) {
+                print "  ",$message;
+              }
+              print '  ',__('(no SITE UTIME on this server)'),"\n";
+            } else {
+              croak __x("Cannot SITE UTIME {filename}: {ftperr}",
+                        filename => $tmpname,
+                        ftperr   => $message);
+            }
+          }
+        }
       }
     }
     $self->db_set_mtime ($dbh, $option{'remote'}, $filename,
@@ -667,6 +696,13 @@ sub st_space {
   return scalar (Math::Round::nhimult ($blksize, $st->size));
 }
 
+# $t is a time_t style seconds since the epoch
+# Return a string YYYYMMDDHHMMSS in GMT as per SITE UTIME.
+sub timet_to_utime {
+  my ($t) = @_;
+  return POSIX::strftime ('%Y%m%d%H%M%S', gmtime($t));
+}
+
 sub timet_to_timestamp {
   my ($t) = @_;
   return POSIX::strftime ('%Y-%m-%d %H:%M:%S+00:00', gmtime($t));
@@ -722,7 +758,7 @@ L<http://user42.tuxfamily.org/upfiles/index.html>
 
 =head1 LICENSE
 
-Copyright 2009, 2010, 2011, 2012, 2013 Kevin Ryde
+Copyright 2009, 2010, 2011, 2012, 2013, 2014 Kevin Ryde
 
 Upfiles is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software

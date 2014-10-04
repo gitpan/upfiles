@@ -1,4 +1,4 @@
-# Copyright 2009, 2010, 2011, 2012 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012, 2013, 2014 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -25,12 +25,13 @@ use Net::FTP;
 # uncomment this to run the ### lines
 #use Smart::Comments;
 
-our $VERSION = 9;
+our $VERSION = 10;
 
 sub new {
   my $class = shift;
   return bless { verbose => 0,
                  want_dir => '/',
+                 have_site_utime => 'unknown',
                  @_ }, $class;
 }
 
@@ -39,6 +40,10 @@ sub message {
   return delete $self->{'message'}
     || (defined $self->{'ftp'}
         && $self->{'ftp'}->message);
+}
+sub code {
+  my ($self) = @_;
+  return (defined $self->{'ftp'} ? $self->{'ftp'}->code : -1);
 }
 
 sub host {
@@ -190,6 +195,10 @@ sub rmdir {
 sub rename {
   my $self = shift;
   return $self->ensure_all && $self->{'ftp'}->rename (@_);
+}
+sub site {
+  my $self = shift;
+  return $self->ensure_all && $self->{'ftp'}->site (@_);
 }
 
 sub all_ok {

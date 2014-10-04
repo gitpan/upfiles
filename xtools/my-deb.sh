@@ -2,7 +2,7 @@
 
 # my-deb.sh -- make .deb
 
-# Copyright 2009, 2010, 2011, 2012, 2013 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012, 2013, 2014 Kevin Ryde
 
 # my-deb.sh is shared by several distributions.
 #
@@ -112,7 +112,7 @@ fi
 dpkg-source -b $DEBNAME-$VERSION \
                ${DEBNAME}_$VERSION.orig.tar.gz; \
 lintian -I -i \
-  --suppress-tags maintainer-upload-has-incorrect-version-number,empty-debian-diff,debian-rules-uses-deprecated-makefile *.dsc
+  --suppress-tags maintainer-upload-has-incorrect-version-number,changelog-should-mention-nmu,empty-debian-diff,debian-rules-uses-deprecated-makefile *.dsc
 cd /
 rm -rf $TEMP
 

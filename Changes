@@ -1,4 +1,4 @@
-Copyright 2009, 2010, 2011, 2012, 2013 Kevin Ryde
+Copyright 2009, 2010, 2011, 2012, 2013, 2014 Kevin Ryde
 
 This file is part of Upfiles.
 
@@ -16,6 +16,9 @@ You should have received a copy of the GNU General Public License
 along with Upfiles.  If not, see <http://www.gnu.org/licenses/>.
 
 
+
+Version 10, October 2014
+    - send file times with SITE UTIME if the server has that
 
 Version 9, February 2013
     - Net::FTP error message() should be in scalar context

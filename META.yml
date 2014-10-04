@@ -1,34 +1,35 @@
---- #YAML:1.0
-name:               upfiles
-version:            9
-abstract:           Upload files to a remote FTP server.
+---
+abstract: 'Upload files to a remote FTP server.'
 author:
-    - Kevin Ryde <user42@zip.com.au>
-license:            gpl
-distribution_type:  module
-configure_requires:
-    ExtUtils::MakeMaker:  0
+  - 'Kevin Ryde <user42_kevin@yahoo.com.au>'
 build_requires:
-    ExtUtils::MakeMaker:  0
-requires:
-    DBD::SQLite:          0
-    DBI:                  0
-    File::HomeDir:        0
-    Locale::TextDomain:   0
-    Math::Round:          0
-    perl:                 5.010
-    Regexp::Common:       0
-    Regexp::Common::Emacs:  0
-    URI:                  0
-resources:
-    homepage:  http://user42.tuxfamily.org/upfiles/index.html
-    license:   http://www.gnu.org/licenses/gpl.html
-no_index:
-    directory:
-        - t
-        - inc
-        - devel
-generated_by:       ExtUtils::MakeMaker version 6.57_05
+  ExtUtils::MakeMaker: '0'
+configure_requires:
+  ExtUtils::MakeMaker: '0'
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 6.98, CPAN::Meta::Converter version 2.142690'
+license: gpl
 meta-spec:
-    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
-    version:  1.4
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: upfiles
+no_index:
+  directory:
+    - t
+    - inc
+    - devel
+    - xt
+requires:
+  DBD::SQLite: '0'
+  DBI: '0'
+  File::HomeDir: '0'
+  Locale::TextDomain: '0'
+  Math::Round: '0'
+  Regexp::Common: '0'
+  Regexp::Common::Emacs: '0'
+  URI: '0'
+  perl: '5.010'
+resources:
+  homepage: http://user42.tuxfamily.org/upfiles/index.html
+  license: http://www.gnu.org/licenses/gpl.html
+version: '10'

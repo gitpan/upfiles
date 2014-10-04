@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2009, 2010, 2012 Kevin Ryde
+# Copyright 2009, 2010, 2012, 2014 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -32,10 +32,13 @@ mkdir ('/tmp/upf/sub');
 if (! -f '/tmp/upf/sub/foo.txt') {
   system ('echo hello >/tmp/upf/sub/foo.txt');
 }
-system ('touch /tmp/upf/fjdsk.txt');
+system ('touch /tmp/upf/bar.txt');
 
 
 my $upf = App::Upfiles->new (config_filename => "$FindBin::Bin/upf.conf");
-unshift @ARGV, '--verbose=9';
+unshift @ARGV,
+  '--verbose=2',
+  '-n',
+  ;
 
 $upf->command_line;

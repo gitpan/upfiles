@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2009, 2010, 2011, 2012 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012, 2014 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -26,8 +26,8 @@ WriteMakefile
   (NAME         => 'upfiles',
    ABSTRACT     => 'Upload files to a remote FTP server.',
    VERSION_FROM => 'lib/App/Upfiles.pm',
-   AUTHOR       => 'Kevin Ryde <user42@zip.com.au>',
-   LICENSE      => 'gpl',
+   AUTHOR       => 'Kevin Ryde <user42_kevin@yahoo.com.au>',
+   LICENSE      => 'gpl_3',
    SIGN         => 1,
    EXE_FILES    => [ 'upfiles' ],
    PREREQ_PM    => {
@@ -47,7 +47,7 @@ WriteMakefile
      { homepage => 'http://user42.tuxfamily.org/upfiles/index.html',
        license  => 'http://www.gnu.org/licenses/gpl.html',
      },
-     no_index => { directory=>['devel'],
+     no_index => { directory=>['devel','xt'],
                  },
    },
   );

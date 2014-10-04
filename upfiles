@@ -1,6 +1,6 @@
 #!perl -w
 
-# Copyright 2009, 2010, 2011, 2012 Kevin Ryde
+# Copyright 2009, 2010, 2011, 2012, 2013, 2014 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -22,7 +22,7 @@ use strict;
 use warnings;
 use App::Upfiles;
 
-our $VERSION = 9;
+our $VERSION = 10;
 
 my $upf = App::Upfiles->new;
 exit $upf->command_line;
@@ -55,7 +55,7 @@ some conditionals, use C<< $ENV{HOME} >>, etc.  Then to upload run
 
     upfiles
 
-Or to upload just some selected files,
+Or to upload just some selected files (the local filenames),
 
     upfiles /my/directory/foo.txt /my/directory/src/xyzzy.pl
 
@@ -67,8 +67,8 @@ file.
 B<upfiles> records what has been sent in an SQLite database file
 F<.upfiles.sqdb> in each local toplevel directory, for example
 F</my/directory/.upfiles.sqdb>.  Local changes are identified by comparing
-file mtimes and sizes against the database.  This is much faster than asking
-the remote server what it's got.
+file mtimes and sizes against the database.  This is faster than asking the
+remote server what it's got.
 
 For convenience some local files are always excluded from the upload.
 Currently this is
@@ -81,10 +81,15 @@ Currently this is
 Files are uploaded one by one.  The upload goes first to a temporary file
 and is then renamed.  This means an incomplete file isn't left if the
 connection is lost or upfiles is killed during transfer.  Temporary files
-are noted in the database and any leftovers deleted on the next upfiles run.
+are noted in the database and any leftovers are deleted on the next upfiles
+run.
+
+File modification times are copied to the server if it has the C<SITE UTIME>
+command.  This is a common extension to the FTP protocol.
 
 Plain RFC959 ftp doesn't have a notion of symlinks or hard links so
-C<upfiles> follows any local links to actual content to upload.
+C<upfiles> follows any local links to actual content to upload.  (Perhaps in
+the future the C<SITE SYMLINK> command could be used if available.)
 
 =head1 CONFIGURATION
 
@@ -111,6 +116,12 @@ Additional filenames to exclude.  For example to exclude a local F<Makefile>
     upfiles (local => '/my/directory',
              remote => 'ftp://some-server.org/pub/fred',
              exclude_regexps => [ qr{/(^|/)[Mm]akefile$} ]);
+
+=item C<copy_utime> (0, 1, default C<"if_possible">)
+
+Whether to copy file modification times to the server with the C<SITE UTIME>
+command.  The default C<"if_possible"> means do so if the server supports
+it.  0 means don't try, 1 means it must work.
 
 =back
 
@@ -199,7 +210,7 @@ L<http://user42.tuxfamily.org/upfiles/index.html>
 
 =head1 LICENSE
 
-Copyright 2009, 2010, 2011, 2012 Kevin Ryde
+Copyright 2009, 2010, 2011, 2012, 2013, 2014 Kevin Ryde
 
 Upfiles is free software; you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software

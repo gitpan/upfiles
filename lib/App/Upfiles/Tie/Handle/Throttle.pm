@@ -1,4 +1,4 @@
-# Copyright 2012 Kevin Ryde
+# Copyright 2012, 2013 Kevin Ryde
 
 # This file is part of Upfiles.
 #
@@ -22,7 +22,7 @@ use Time::HiRes;
 use List::Util 'min';
 
 use vars '$VERSION';
-$VERSION = 9;
+$VERSION = 10;
 
 # uncomment this to run the ### lines
 #use Smart::Comments;
